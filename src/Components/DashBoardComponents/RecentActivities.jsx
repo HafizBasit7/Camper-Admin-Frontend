@@ -128,7 +128,7 @@ const RecentActivities = () => {
         color={color} 
         icon={icon} 
         label={label}
-        sx={{ height: 24 }}
+        sx={{ height: 24,minWidth:100 ,borderRadius:2}}
       />
     );
   };

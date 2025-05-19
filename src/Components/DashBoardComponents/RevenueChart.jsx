@@ -1,11 +1,21 @@
 import React from 'react';
-import { Card, CardContent, Typography, Box, Stack, MenuItem, Select } from '@mui/material';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Paper, Box, Typography, Button, ButtonGroup } from '@mui/material';
+import { useTheme, alpha } from '@mui/material/styles';
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend
+} from 'recharts';
 
 const RevenueChart = () => {
+  const theme = useTheme();
   const [timeRange, setTimeRange] = React.useState('monthly');
 
-  // This would come from your API based on the selected time range
   const monthlyData = [
     { name: 'Jan', revenue: 25000, commission: 2500 },
     { name: 'Feb', revenue: 28000, commission: 2800 },
@@ -32,20 +42,8 @@ const RevenueChart = () => {
     { name: 'Sun', revenue: 2200, commission: 220 },
   ];
 
-  const handleTimeRangeChange = (event) => {
-    setTimeRange(event.target.value);
-  };
-
-  // Select data based on time range
-  const chartData = timeRange === 'monthly' 
-    ? monthlyData 
-    : timeRange === 'weekly' 
-      ? weeklyData 
-      : dailyData;
-
-  // Calculate totals
-  const totalRevenue = chartData.reduce((sum, item) => sum + item.revenue, 0);
-  const totalCommission = chartData.reduce((sum, item) => sum + item.commission, 0);
+  const chartData =
+    timeRange === 'monthly' ? monthlyData : timeRange === 'weekly' ? weeklyData : dailyData;
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -54,89 +52,86 @@ const RevenueChart = () => {
   });
 
   return (
-    <Card 
-      elevation={0} 
-      sx={{ 
-        height: '100%',
+    <Paper
+      elevation={0}
+      sx={{
+        p: 3,
+        borderRadius: 3,
         border: '1px solid',
-        borderColor: 'primary.verylight',
-        borderRadius: 2,
-                width:"100%"
-
+        borderColor: alpha(theme.palette.divider, 0.7),
+        mb: 4
       }}
     >
-      <CardContent>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-          <Typography variant="h6">Revenue & Commission</Typography>
-          <Select
-            value={timeRange}
-            onChange={handleTimeRangeChange}
-            size="small"
-            sx={{ minWidth: 120 }}
-          >
-            <MenuItem value="daily">Daily</MenuItem>
-            <MenuItem value="weekly">Weekly</MenuItem>
-            <MenuItem value="monthly">Monthly</MenuItem>
-          </Select>
-        </Box>
-
-        <Stack direction="row" spacing={4} mb={2}>
-          <Box>
-            <Typography variant="body2" color="text.secondary">Total Revenue</Typography>
-            <Typography variant="h5" fontWeight={600} color="text.primary">
-              {formatter.format(totalRevenue)}
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary">Total Commission</Typography>
-            <Typography variant="h5" fontWeight={600} color="primary.main">
-              {formatter.format(totalCommission)}
-            </Typography>
-          </Box>
-        </Stack>
-
-        <Box sx={{ height: 280 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={chartData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          Revenue & Commission
+        </Typography>
+        <ButtonGroup variant="outlined" size="small" sx={{ borderRadius: 2 }}>
+          {['daily', 'weekly', 'monthly'].map((period) => (
+            <Button
+              key={period}
+              onClick={() => setTimeRange(period)}
+              variant={timeRange === period ? 'contained' : 'outlined'}
+              sx={{
+                px: 2,
+                ...(period === 'daily' && {
+                  borderTopLeftRadius: 8,
+                  borderBottomLeftRadius: 8
+                }),
+                ...(period === 'monthly' && {
+                  borderTopRightRadius: 8,
+                  borderBottomRightRadius: 8
+                })
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip 
-                formatter={(value) => formatter.format(value)}
-                labelFormatter={(label) => `Period: ${label}`}
-              />
-              <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="revenue" 
-                name="Revenue" 
-                stroke="#385DFF" 
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="commission" 
-                name="Commission" 
-                stroke="#FF9B00" 
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </Box>
-      </CardContent>
-    </Card>
+              {period.charAt(0).toUpperCase() + period.slice(1)}
+            </Button>
+          ))}
+        </ButtonGroup>
+      </Box>
+
+      <Box sx={{ height: 400 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={chartData}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke={alpha(theme.palette.divider, 0.5)} />
+            <XAxis dataKey="name" stroke={theme.palette.text.secondary} />
+            <YAxis stroke={theme.palette.text.secondary} />
+            <Tooltip
+              formatter={(value) => formatter.format(value)}
+              labelFormatter={(label) => `Period: ${label}`}
+              contentStyle={{
+                borderRadius: 12,
+                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                border: 'none',
+                backgroundColor: '#fff'
+              }}
+            />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="revenue"
+              name="Revenue"
+              stroke={theme.palette.primary.main}
+              strokeWidth={2}
+              dot={{ r: 4 }}
+              activeDot={{ r: 6 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="commission"
+              name="Commission"
+              stroke={theme.palette.success.main}
+              strokeWidth={2}
+              dot={{ r: 4 }}
+              activeDot={{ r: 6 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </Box>
+    </Paper>
   );
 };
 

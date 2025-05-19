@@ -199,7 +199,7 @@ const UserManagement = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" sx={{ mb: 3, fontWeight: 600, color: 'primary.main' }}>
+      <Typography variant="h4" sx={{ mb: 3, fontWeight: 600, color: 'text.primary' }}>
         User Management
       </Typography>
       
@@ -294,7 +294,9 @@ const UserManagement = () => {
                         sx={{ 
                           backgroundColor: user.role === 'admin' ? 'primary.blue' : 'primary.orange',
                           color: 'white',
-                          fontWeight: 500
+                          fontWeight: 500,
+                          minWidth:70,
+                          borderRadius:2
                         }}
                       />
                     </TableCell>
@@ -305,7 +307,9 @@ const UserManagement = () => {
                         sx={{ 
                           backgroundColor: user.status === 'active' ? 'success.light' : 'error.light',
                           color: 'white',
-                          fontWeight: 500
+                          fontWeight: 500,
+                          minWidth:80,
+                          borderRadius:2
                         }}
                       />
                     </TableCell>
@@ -316,7 +320,9 @@ const UserManagement = () => {
                         sx={{ 
                           backgroundColor: user.verified ? 'info.light' : 'secondary.light',
                           color: 'white',
-                          fontWeight: 500
+                          fontWeight: 500,
+                          minWidth:90,
+                          borderRadius:2
                         }}
                       />
                     </TableCell>

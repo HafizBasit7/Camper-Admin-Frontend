@@ -184,9 +184,11 @@ const OrdersTable = ({ orders, onStatusUpdate }) => {
                       label={order.status} 
                       size="small" 
                       sx={{ 
-                        color: 'white',
+                        color: 'black',
                         bgcolor: getStatusColor(order.status),
-                        fontWeight: 500
+                        fontWeight: 500,
+                        minWidth:150,
+                        borderRadius:2
                       }} 
                     />
                   </TableCell>

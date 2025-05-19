@@ -44,9 +44,10 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
             label={order.status} 
             size="small" 
             sx={{ 
-              color: 'white',
+              color: '#000',
               bgcolor: getStatusColor(order.status),
-              fontWeight: 500
+              fontWeight: 500,
+              borderRadius:2
             }} 
           />
         </Box>

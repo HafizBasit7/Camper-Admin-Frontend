@@ -20,7 +20,8 @@ import OrdersChart from '../Components/DashBoardComponents/OrderChart';
 import RevenueChart from '../Components/DashBoardComponents/RevenueChart';
 
 const Dashboard = () => {
-  // This would come from your API or state management
+
+
   const dashboardData = {
     totalUsers: 1254,
     totalVehicles: 345,
@@ -105,8 +106,8 @@ const Dashboard = () => {
         Dashboard
       </Typography>
 
-      {/* Main Stats */}
-      <Grid container spacing={3}>
+      
+      <Grid container spacing={3} mb={3}>
         {statCards.map((card, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <StatCard 
@@ -118,43 +119,40 @@ const Dashboard = () => {
           </Grid>
         ))}
       </Grid>
-
-      {/* Charts Section */}
-  <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
-  <Box flex={1}>
+      <Stack direction="column" spacing={3}>
+  <Box width="100%">
     <OrdersChart />
   </Box>
-  <Box flex={1}>
+  <Box width="100%">
     <RevenueChart />
   </Box>
 </Stack>
 
-
-
-      {/* Pending Items Section */}
       <Box sx={{ mt: 3 }}>
-        <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-          Pending Approvals
-        </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <PendingSection 
-              title="Pending Users" 
-              count={dashboardData.pendingUsers} 
-              type="users" 
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <PendingSection 
-              title="Pending Vehicles" 
-              count={dashboardData.pendingVehicles} 
-              type="vehicles" 
-            />
-          </Grid>
-        </Grid>
+  <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
+    Pending Approvals
+  </Typography>
+  <Grid container spacing={3}>
+    <Grid item xs={12} md={6} display="flex" justifyContent="center">
+      <Box width="100%" maxWidth={500}>
+        <PendingSection 
+          title="Pending Users" 
+          count={dashboardData.pendingUsers} 
+          type="users" 
+        />
       </Box>
-
-      {/* Recent Activities */}
+    </Grid>
+    <Grid item xs={12} md={6} display="flex" justifyContent="center">
+      <Box width="100%" maxWidth={500}>
+        <PendingSection 
+          title="Pending Vehicles" 
+          count={dashboardData.pendingVehicles} 
+          type="vehicles" 
+        />
+      </Box>
+    </Grid>
+  </Grid>
+</Box>
       <Box sx={{ mt: 3 }}>
         <RecentActivities />
       </Box>

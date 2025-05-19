@@ -30,23 +30,24 @@ export const ORDER_ACTIONS = {
 };
 
 export const getStatusColor = (status) => {
-  switch(status) {
+  switch (status) {
     case ORDER_STATUS.NEW:
-      return 'primary.blue';
+      return '#cce5ff'; // light blue
     case ORDER_STATUS.ONGOING:
-      return 'primary.orange';
+      return '#ffe5b4'; // light orange
     case ORDER_STATUS.COMPLETED:
-      return 'success.main';
+      return '#d4edda'; // light green
     case ORDER_STATUS.HANDOVERED:
-      return 'primary.main';
+      return '#b3e5fc'; // soft sky blue
     case ORDER_STATUS.DISMISSED:
-      return 'error.main';
+      return '#f8d7da'; // light red
     case ORDER_STATUS.ISSUE:
-      return 'warning.main';
+      return '#fff3cd'; // soft yellow
     default:
-      return 'secondary.main';
+      return '#e2e3e5'; // neutral light gray
   }
 };
+
 
 export const ORDER_TABS = [
   { label: 'All', value: 'all' },

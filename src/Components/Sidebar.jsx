@@ -1,18 +1,31 @@
 import React from 'react'
-import { Drawer, List, ListItemButton, ListItemIcon, ListItemText, Box, Typography } from '@mui/material'
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Box,
+  Typography
+} from '@mui/material'
 import { Dashboard, People, Settings } from '@mui/icons-material'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useTheme } from '@mui/material/styles'
+import GroupIcon from '@mui/icons-material/Group';
+
 
 const drawerWidth = 240
-
 const navItems = [
   { text: 'Dashboard', icon: <Dashboard />, path: '/' },
-  { text: 'Users', icon: <People />, path: '/users' },
+  { text: 'Orders', icon: <People />, path: '/orders' },
   { text: 'Settings', icon: <Settings />, path: '/settings' },
+    { text: 'Users', icon: <GroupIcon />, path: '/users' },
+
 ]
 
 const Sidebar = () => {
   const location = useLocation()
+  const theme = useTheme()
 
   return (
     <Drawer
@@ -23,13 +36,19 @@ const Sidebar = () => {
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
           boxSizing: 'border-box',
-          backgroundColor: '#1e1e2f',
+          backgroundColor: 'rgba(0, 0, 0, 0.97)', // dark glassy
           color: '#fff',
+          backdropFilter: 'blur(10px)', // glassmorphism
+          borderRight: '1px solid rgba(255, 255, 255, 0.1)',
         },
       }}
     >
-      <Box sx={{ p: 2, textAlign: 'center', borderBottom: '1px solid #444' }}>
-        <Typography variant="h6" fontWeight="bold">
+      <Box sx={{ p: 2, textAlign: 'center', borderBottom: `1px solid ${theme.palette.primary.light}` }}>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{ fontFamily: theme.typography.fontFamily }}
+        >
           Admin Panel
         </Typography>
       </Box>
@@ -41,18 +60,35 @@ const Sidebar = () => {
             <NavLink
               key={item.text}
               to={item.path}
-              style={{ textDecoration: 'none', color: 'inherit' }}
+              style={{ textDecoration: 'none' }}
             >
               <ListItemButton
                 sx={{
-                  backgroundColor: isActive ? '#2e3b55' : 'inherit',
+                  backgroundColor: isActive
+                    ? theme.palette.primary.main
+                    : 'transparent',
+                  color: isActive ? '#000' : '#fff',
                   '&:hover': {
-                    backgroundColor: '#2e3b55',
+                    backgroundColor: theme.palette.primary.main,
+                    color: '#000',
                   },
+                  transition: 'all 0.3s ease',
                 }}
               >
-                <ListItemIcon sx={{ color: '#fff' }}>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
+                <ListItemIcon
+                  sx={{
+                    color: isActive ? '#000' : '#fff',
+                    minWidth: 36,
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                  primaryTypographyProps={{
+                    fontWeight: isActive ? 'bold' : 'normal',
+                  }}
+                />
               </ListItemButton>
             </NavLink>
           )

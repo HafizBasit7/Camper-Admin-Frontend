@@ -1,7 +1,11 @@
-import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import AdminLayout from './Layouts/AdminLayouts'
 import Dashboard from './Pages/DashBoard'
+import OrdersPage from './Pages/OrdersPage'
+import Settings from './Components/DashBoardComponents/Settings'
+import UserManagement from './Pages/UserManaegement'
+
+
 
 
 const App = () => {
@@ -9,7 +13,10 @@ const App = () => {
     <Routes>
       <Route path="/" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
-        {/* <Route path="users" element={<Users />} /> */}
+              <Route path="/settings" element={<Settings />} />
+        <Route path="orders" element={<OrdersPage />} />
+                <Route path="users" element={<        UserManagement />} />
+
       </Route>
     </Routes>
   )

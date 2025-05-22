@@ -12,7 +12,7 @@ import { Dashboard, People, Settings, AccountBalance, Article, Report } from '@m
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
 import GroupIcon from '@mui/icons-material/Group';
-
+import logo from '../assets/logo.png'
 
 const drawerWidth = 240
 const navItems = [
@@ -49,13 +49,16 @@ const Sidebar = () => {
     }}
   >
     <Box sx={{ p: 2, textAlign: 'center', borderBottom: `1px solid ${theme.palette.divider}` }}>
-      <Typography
-        variant="h6"
-        fontWeight="bold"
-        sx={{ fontFamily: theme.typography.fontFamily, color: '#111' }}
-      >
-        Admin Panel
-      </Typography>
+      <img 
+        src={logo} 
+        alt="Logo" 
+        style={{ 
+          maxWidth: '100%', 
+          height: 'auto',
+          margin: '0 auto',
+          borderRadius:5,
+        }} 
+      />
     </Box>
   
     <List>

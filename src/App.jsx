@@ -12,11 +12,13 @@ import WithdrawalManagement from './Pages/WithdrawalManagement';
 import BlogManagement from './Pages/BlogManagement';
 import ReportsManagement from './Pages/ReportsManagement';
 import PendingItemsPage from './Pages/PendingItemsPage';
+import LoginPage from './Pages/LoginPage';
 
 const App = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Routes>
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="settings" element={<Settings />} />

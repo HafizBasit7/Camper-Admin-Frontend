@@ -92,8 +92,7 @@ const OrdersPage = () => {
           <LoadingSpinner />
         ) : (
           <OrdersTable 
-            orders={filteredOrders} 
-            onStatusUpdate={handleStatusUpdate} 
+            orders={filteredOrders}
           />
         )}
       </Box>

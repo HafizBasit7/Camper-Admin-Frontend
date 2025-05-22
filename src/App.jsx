@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
@@ -20,7 +20,8 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
+          <Route index element={<Navigate to="/login" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="settings" element={<Settings />} />
           <Route path="orders" element={<OrdersPage />} />
           <Route path="users" element={<UserManagement />} />

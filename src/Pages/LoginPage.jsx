@@ -29,9 +29,8 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically make an API call to verify credentials
-    // For now, we'll just navigate to the dashboard
-    navigate('/');
+    
+    navigate('/dashboard');
   };
 
   return (

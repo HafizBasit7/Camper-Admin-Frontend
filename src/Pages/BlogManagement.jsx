@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Container,
@@ -14,6 +15,7 @@ import { mockBlogs } from '../data/mockData';
 import BlogDialog from '../Components/BlogComponent/BlogDialog';
 
 const BlogManagement = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -58,7 +60,7 @@ const BlogManagement = () => {
                 mb: 1
               }}
             >
-              Blog Management
+              {t('blog.title')}
             </Typography>
             <Typography 
               variant="body1" 
@@ -67,7 +69,7 @@ const BlogManagement = () => {
                 opacity: 0.8
               }}
             >
-              Create and manage blog posts
+              {t('blog.subtitle')}
             </Typography>
           </Box>
           <Button
@@ -80,7 +82,7 @@ const BlogManagement = () => {
               px: 3
             }}
           >
-            New Blog Post
+            {t('blog.newPost')}
           </Button>
         </Box>
 

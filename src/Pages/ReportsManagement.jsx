@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Container,
@@ -31,147 +32,66 @@ import {
   Cancel,
   Close
 } from '@mui/icons-material';
+import { mockReports } from '../data/mockData';
 
-// Mock data for reports
-const mockReports = [
-  {
-    id: 1,
-    vehicleName: 'Luxury RV 2023',
-    ownerName: 'John Doe',
-    reportedBy: 'Alice Smith',
-    reportType: 'FAKE_LISTING',
-    description: 'Vehicle condition does not match the description',
-    status: 'PENDING',
-    date: '2024-03-15',
-    counterReport: null
-  },
-  {
-    id: 2,
-    vehicleName: 'Family Camper',
-    ownerName: 'Jane Smith',
-    reportedBy: 'Bob Johnson',
-    reportType: 'MISCONDUCT',
-    description: 'Owner was unprofessional during pickup',
-    status: 'RESOLVED',
-    date: '2024-03-14',
-    counterReport: {
-      description: 'User damaged the vehicle and refused to pay',
-      status: 'PENDING'
-    }
-  },
-  // Add more mock reports as needed
-];
-
-const CustomInput = ({ label, value, onChange, type = 'text', multiline = false, rows = 1 }) => (
-  <Box sx={{ mb: 3 }}>
-    <Typography 
-      variant="body2" 
-      sx={{ 
-        color: 'text.secondary',
-        mb: 1,
-        fontWeight: 500
-      }}
-    >
-      {label}
-    </Typography>
-    {multiline ? (
-      <textarea
-        value={value}
-        onChange={onChange}
-        rows={rows}
-        style={{
-          width: '100%',
-          padding: '12px 16px',
-          borderRadius: '12px',
-          border: '1px solid rgba(0, 0, 0, 0.1)',
-          backgroundColor: 'white',
-          fontSize: '14px',
-          outline: 'none',
-          transition: 'all 0.2s ease',
-          resize: 'vertical',
-          minHeight: '100px',
-          fontFamily: 'inherit',
-          '&:focus': {
-            borderColor: '#FF9B00',
-            boxShadow: '0 0 0 2px rgba(255, 155, 0, 0.1)'
-          }
-        }}
-      />
-    ) : (
-      <input
+const CustomInput = ({ label, value, onChange, type = 'text', multiline = false, rows = 1 }) => {
+  const { t } = useTranslation();
+  return (
+    <Box sx={{ mb: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1 }}>
+        {t(label)}
+      </Typography>
+      <TextField
+        fullWidth
         type={type}
+        multiline={multiline}
+        rows={rows}
         value={value}
         onChange={onChange}
-        style={{
-          width: '100%',
-          padding: '12px 16px',
-          borderRadius: '12px',
-          border: '1px solid rgba(0, 0, 0, 0.1)',
-          backgroundColor: 'white',
-          fontSize: '14px',
-          outline: 'none',
-          transition: 'all 0.2s ease',
-          '&:focus': {
-            borderColor: '#FF9B00',
-            boxShadow: '0 0 0 2px rgba(255, 155, 0, 0.1)'
-          }
+        variant="outlined"
+        size="small"
+        InputProps={{
+          readOnly: true
         }}
       />
-    )}
-  </Box>
-);
+    </Box>
+  );
+};
 
-const CustomSelect = ({ label, value, onChange, options }) => (
-  <Box sx={{ mb: 3 }}>
-    <Typography 
-      variant="body2" 
-      sx={{ 
-        color: 'text.secondary',
-        mb: 1,
-        fontWeight: 500
-      }}
-    >
-      {label}
-    </Typography>
-    <select
-      value={value}
-      onChange={onChange}
-      style={{
-        width: '100%',
-        padding: '12px 16px',
-        borderRadius: '12px',
-        border: '1px solid rgba(0, 0, 0, 0.1)',
-        backgroundColor: 'white',
-        fontSize: '14px',
-        outline: 'none',
-        transition: 'all 0.2s ease',
-        cursor: 'pointer',
-        appearance: 'none',
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'right 12px center',
-        backgroundSize: '16px',
-        '&:focus': {
-          borderColor: '#FF9B00',
-          boxShadow: '0 0 0 2px rgba(255, 155, 0, 0.1)'
-        }
-      }}
-    >
-      {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
-  </Box>
-);
+const CustomSelect = ({ label, value, onChange, options }) => {
+  const { t } = useTranslation();
+  return (
+    <Box sx={{ mb: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1 }}>
+        {t(label)}
+      </Typography>
+      <TextField
+        select
+        fullWidth
+        value={value}
+        onChange={onChange}
+        variant="outlined"
+        size="small"
+        SelectProps={{
+          native: true
+        }}
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {t(option.label)}
+          </option>
+        ))}
+      </TextField>
+    </Box>
+  );
+};
 
 const ReportDialog = ({ open, onClose, report, onAction }) => {
-  const [action, setAction] = useState('');
+  const { t } = useTranslation();
   const [notes, setNotes] = useState('');
 
   const handleAction = () => {
-    onAction(report.id, action, notes);
+    onAction(report.id, report.status === 'PENDING' ? 'RESOLVE' : 'DISMISS', notes);
     onClose();
   };
 
@@ -201,7 +121,7 @@ const ReportDialog = ({ open, onClose, report, onAction }) => {
               textShadow: '0 1px 2px rgba(0,0,0,0.1)'
             }}
           >
-            Report Details
+            {t('reports.dialog.title')}
           </Typography>
           <Button
             onClick={onClose}
@@ -237,24 +157,20 @@ const ReportDialog = ({ open, onClose, report, onAction }) => {
             gutterBottom
             sx={{ fontWeight: 600 }}
           >
-            Vehicle Information
+            {t('reports.dialog.vehicleInfo')}
           </Typography>
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 2, mb: 3 }}>
             <Box>
-              <Typography variant="body2" color="text.secondary">Vehicle</Typography>
-              <Typography variant="body1" fontWeight={500}>{report?.vehicleName}</Typography>
+              <CustomInput
+                label="reports.table.vehicleName"
+                value={report?.vehicleName}
+              />
             </Box>
             <Box>
-              <Typography variant="body2" color="text.secondary">Owner</Typography>
-              <Typography variant="body1" fontWeight={500}>{report?.ownerName}</Typography>
-            </Box>
-            <Box>
-              <Typography variant="body2" color="text.secondary">Reported By</Typography>
-              <Typography variant="body1" fontWeight={500}>{report?.reportedBy}</Typography>
-            </Box>
-            <Box>
-              <Typography variant="body2" color="text.secondary">Date</Typography>
-              <Typography variant="body1" fontWeight={500}>{report?.date}</Typography>
+              <CustomInput
+                label="reports.table.owner"
+                value={report?.ownerName}
+              />
             </Box>
           </Box>
         </Paper>
@@ -276,48 +192,56 @@ const ReportDialog = ({ open, onClose, report, onAction }) => {
             gutterBottom
             sx={{ fontWeight: 600 }}
           >
-            Report Details
+            {t('reports.dialog.reporterInfo')}
           </Typography>
           <Box sx={{ mb: 2 }}>
-            <Typography variant="body2" color="text.secondary">Type</Typography>
-            <Typography variant="body1" fontWeight={500}>{report?.reportType}</Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary">Description</Typography>
-            <Typography variant="body1">{report?.description}</Typography>
+            <CustomInput
+              label="reports.table.reportedBy"
+              value={report?.reportedBy}
+            />
           </Box>
         </Paper>
 
-        {report?.counterReport && (
-          <Paper
-            sx={{
-              p: 3,
-              mb: 3,
-              background: 'rgba(255, 155, 0, 0.05)',
-              backdropFilter: 'blur(10px)',
-              borderRadius: 2,
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
-              border: '1px solid rgba(255, 155, 0, 0.1)'
-            }}
+        <Paper
+          sx={{
+            p: 3,
+            mb: 3,
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: 2,
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }}
+        >
+          <Typography 
+            variant="subtitle2" 
+            color="text.secondary" 
+            gutterBottom
+            sx={{ fontWeight: 600 }}
           >
-            <Typography 
-              variant="subtitle2" 
-              color="warning.main" 
-              gutterBottom
-              sx={{ fontWeight: 600 }}
-            >
-              Counter Report
-            </Typography>
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="body2" color="text.secondary">Description</Typography>
-              <Typography variant="body1">{report?.counterReport.description}</Typography>
-            </Box>
-            <Box>
-              <Typography variant="body2" color="text.secondary">Status</Typography>
-              <Typography variant="body1" fontWeight={500}>{report?.counterReport.status}</Typography>
-            </Box>
-          </Paper>
-        )}
+            {t('reports.dialog.issueDetails')}
+          </Typography>
+          <Box sx={{ mb: 2 }}>
+            <CustomInput
+              label="reports.table.issue"
+              value={report?.description}
+              multiline
+              rows={3}
+            />
+          </Box>
+          <Box>
+            <CustomInput
+              label="reports.table.status"
+              value={t(`reports.status.${report?.status?.toLowerCase()}`)}
+            />
+          </Box>
+          <Box>
+            <CustomInput
+              label="reports.table.date"
+              value={new Date(report?.date).toLocaleDateString()}
+            />
+          </Box>
+        </Paper>
 
         <Paper
           sx={{
@@ -331,14 +255,13 @@ const ReportDialog = ({ open, onClose, report, onAction }) => {
         >
           <CustomSelect
             label="Take Action"
-            value={action}
-            onChange={(e) => setAction(e.target.value)}
+            value={report?.status === 'PENDING' ? 'RESOLVE' : 'DISMISS'}
+            onChange={(e) => {
+              // Handle action change
+            }}
             options={[
-              { value: 'WARN_OWNER', label: 'Warn Owner' },
-              { value: 'WARN_USER', label: 'Warn User' },
-              { value: 'SUSPEND_OWNER', label: 'Suspend Owner' },
-              { value: 'SUSPEND_USER', label: 'Suspend User' },
-              { value: 'DISMISS', label: 'Dismiss Report' }
+              { value: 'RESOLVE', label: t('reports.dialog.actions.resolve') },
+              { value: 'DISMISS', label: t('reports.dialog.actions.dismiss') }
             ]}
           />
 
@@ -366,12 +289,12 @@ const ReportDialog = ({ open, onClose, report, onAction }) => {
             }
           }}
         >
-          Cancel
+          {t('reports.dialog.actions.close')}
         </Button>
         <Button
           variant="contained"
           onClick={handleAction}
-          disabled={!action}
+          disabled={!notes}
           sx={{
             textTransform: 'none',
             fontWeight: 500,
@@ -380,7 +303,7 @@ const ReportDialog = ({ open, onClose, report, onAction }) => {
             borderRadius: 2
           }}
         >
-          Take Action
+          {t(`reports.dialog.actions.${report?.status === 'PENDING' ? 'resolve' : 'dismiss'}`)}
         </Button>
       </DialogActions>
     </Dialog>
@@ -388,6 +311,7 @@ const ReportDialog = ({ open, onClose, report, onAction }) => {
 };
 
 const ReportsManagement = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const [currentTab, setCurrentTab] = useState('ALL');
   const [selectedReport, setSelectedReport] = useState(null);
@@ -406,7 +330,6 @@ const ReportsManagement = () => {
   };
 
   const handleAction = (reportId, action, notes) => {
-    // Here you would typically make an API call to handle the action
     console.log('Taking action:', { reportId, action, notes });
   };
 
@@ -457,7 +380,7 @@ const ReportsManagement = () => {
               mb: 1
             }}
           >
-            Reports Management
+            {t('reports.title')}
           </Typography>
           <Typography 
             variant="body1" 
@@ -466,7 +389,7 @@ const ReportsManagement = () => {
               opacity: 0.8
             }}
           >
-            Handle reports and disputes between owners and users
+            {t('reports.subtitle')}
           </Typography>
         </Box>
 
@@ -500,10 +423,10 @@ const ReportsManagement = () => {
               }
             }}
           >
-            <Tab label="All Reports" value="ALL" />
-            <Tab label="Pending" value="PENDING" />
-            <Tab label="Resolved" value="RESOLVED" />
-            <Tab label="Dismissed" value="DISMISSED" />
+            <Tab label={t('reports.tabs.all')} value="ALL" />
+            <Tab label={t('reports.tabs.pending')} value="PENDING" />
+            <Tab label={t('reports.tabs.resolved')} value="RESOLVED" />
+            <Tab label={t('reports.tabs.dismissed')} value="DISMISSED" />
           </Tabs>
         </Paper>
 
@@ -529,14 +452,13 @@ const ReportsManagement = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Vehicle</TableCell>
-                <TableCell>Owner</TableCell>
-                <TableCell>Reported By</TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell>Counter Report</TableCell>
-                <TableCell align="right">Actions</TableCell>
+                <TableCell>{t('reports.table.vehicleName')}</TableCell>
+                <TableCell>{t('reports.table.owner')}</TableCell>
+                <TableCell>{t('reports.table.reportedBy')}</TableCell>
+                <TableCell>{t('reports.table.issue')}</TableCell>
+                <TableCell>{t('reports.table.status')}</TableCell>
+                <TableCell>{t('reports.table.date')}</TableCell>
+                <TableCell>{t('reports.table.actions')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -553,33 +475,20 @@ const ReportsManagement = () => {
                   <TableCell>{report.vehicleName}</TableCell>
                   <TableCell>{report.ownerName}</TableCell>
                   <TableCell>{report.reportedBy}</TableCell>
-                  <TableCell>{report.reportType}</TableCell>
+                  <TableCell>{report.description}</TableCell>
                   <TableCell>
                     <Chip
-                      label={report.status}
+                      label={t(`reports.status.${report.status.toLowerCase()}`)}
                       sx={{
                         backgroundColor: getStatusColor(report.status),
                         color: '#fff',
-                        fontWeight: 500
+                        fontWeight: 500,
+                        borderRadius: 2,
+                        minWidth:150
                       }}
                     />
                   </TableCell>
-                  <TableCell>{report.date}</TableCell>
-                  <TableCell>
-                    {report.counterReport ? (
-                      <Chip
-                        label="Yes"
-                        color="warning"
-                        size="small"
-                      />
-                    ) : (
-                      <Chip
-                        label="No"
-                        color="default"
-                        size="small"
-                      />
-                    )}
-                  </TableCell>
+                  <TableCell>{new Date(report.date).toLocaleDateString()}</TableCell>
                   <TableCell align="right">
                     <IconButton
                       size="small"

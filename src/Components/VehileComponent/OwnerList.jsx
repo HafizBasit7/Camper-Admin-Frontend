@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Paper,
@@ -19,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { mockVehicles } from '../../data/mockData';
 
 const OwnerList = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -72,7 +74,7 @@ const OwnerList = () => {
             mb: 1
           }}
         >
-          Vehicle Owners
+          {t('vehicles.owners.title')}
         </Typography>
         <Typography 
           variant="body1" 
@@ -81,7 +83,7 @@ const OwnerList = () => {
             opacity: 0.8
           }}
         >
-          Manage vehicles by owner
+          {t('vehicles.owners.subtitle')}
         </Typography>
       </Box>
 
@@ -98,13 +100,13 @@ const OwnerList = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 600 }}>Owner Name</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Total Vehicles</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Approved</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Pending</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Drafts</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Reported</TableCell>
-              <TableCell align="right" sx={{ fontWeight: 600 }}>Actions</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.owners.table.ownerName')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.owners.table.totalVehicles')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.owners.table.approved')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.owners.table.pending')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.owners.table.drafts')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.owners.table.reported')}</TableCell>
+              <TableCell align="right" sx={{ fontWeight: 600 }}>{t('vehicles.owners.table.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -175,7 +177,7 @@ const OwnerList = () => {
                   />
                 </TableCell>
                 <TableCell align="right">
-                  <Tooltip title="View Vehicles">
+                  <Tooltip title={t('vehicles.owners.actions.viewVehicles')}>
                     <IconButton
                       size="small"
                       color="primary"

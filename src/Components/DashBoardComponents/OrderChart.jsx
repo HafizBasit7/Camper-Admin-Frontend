@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Paper, Typography, Box, ButtonGroup, Button, TextField } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -7,6 +8,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
 const OrdersChart = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const [timeRange, setTimeRange] = React.useState('monthly');
   const [startDate, setStartDate] = React.useState(new Date('2012-01-01'));
   const [endDate, setEndDate] = React.useState(new Date('2025-12-31'));
@@ -74,19 +76,19 @@ const OrdersChart = () => {
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600 }}>
-          Orders Overview
+          {t('dashboard.ordersChart.title')}
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              label="Start Date"
+              label={t('dashboard.ordersChart.startDate')}
               value={startDate}
               onChange={(newValue) => setStartDate(newValue)}
               renderInput={(params) => <TextField {...params} size="small" />}
               maxDate={endDate}
             />
             <DatePicker
-              label="End Date"
+              label={t('dashboard.ordersChart.endDate')}
               value={endDate}
               onChange={(newValue) => setEndDate(newValue)}
               renderInput={(params) => <TextField {...params} size="small" />}
@@ -112,7 +114,7 @@ const OrdersChart = () => {
                   }),
                 }}
               >
-                {range}
+                {t(`dashboard.ordersChart.timeRanges.${range}`)}
               </Button>
             ))}
           </ButtonGroup>
@@ -136,9 +138,24 @@ const OrdersChart = () => {
             }}
           />
           <Legend />
-          <Bar dataKey="completed" name="Completed" fill={theme.palette.success.main} radius={[4, 4, 0, 0]} />
-          <Bar dataKey="cancelled" name="Cancelled" fill={theme.palette.error.main} radius={[4, 4, 0, 0]} />
-          <Bar dataKey="ongoing" name="Ongoing" fill="#FF9B00" radius={[4, 4, 0, 0]} />
+          <Bar 
+            dataKey="completed" 
+            name={t('dashboard.ordersChart.series.completed')} 
+            fill={theme.palette.success.main} 
+            radius={[4, 4, 0, 0]} 
+          />
+          <Bar 
+            dataKey="cancelled" 
+            name={t('dashboard.ordersChart.series.cancelled')} 
+            fill={theme.palette.error.main} 
+            radius={[4, 4, 0, 0]} 
+          />
+          <Bar 
+            dataKey="ongoing" 
+            name={t('dashboard.ordersChart.series.ongoing')} 
+            fill="#FF9B00" 
+            radius={[4, 4, 0, 0]} 
+          />
         </BarChart>
       </ResponsiveContainer>
     </Paper>

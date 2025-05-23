@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Container,
@@ -14,6 +15,7 @@ import { Visibility, VisibilityOff, Email, Lock, Login } from '@mui/icons-materi
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -72,20 +74,21 @@ const LoginPage = () => {
             variant="h4"
             sx={{ mb: 3, color: 'black', fontWeight: 'bold' }}
           >
-            Admin Login
+            {t('login.title')}
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
             <TextField
               margin="normal"
-              required
+       
               fullWidth
               id="email"
-              label="Email Address"
+              label={t('login.email.label')}
               name="email"
               autoComplete="email"
               autoFocus
               value={formData.email}
               onChange={handleChange}
+              placeholder={t('login.email.placeholder')}
               sx={{ mb: 2 }}
               InputProps={{
                 startAdornment: (
@@ -97,15 +100,16 @@ const LoginPage = () => {
             />
             <TextField
               margin="normal"
-              required
+            
               fullWidth
               name="password"
-              label="Password"
+              label={t('login.password.label')}
               type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
               value={formData.password}
               onChange={handleChange}
+              placeholder={t('login.password.placeholder')}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -115,7 +119,7 @@ const LoginPage = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
+                      aria-label={t('login.togglePassword')}
                       onClick={() => setShowPassword(!showPassword)}
                       edge="end"
                     >
@@ -141,7 +145,7 @@ const LoginPage = () => {
                 py: 1.5,
               }}
             >
-              Sign In
+              {t('login.signIn')}
             </Button>
           </Box>
         </Paper>

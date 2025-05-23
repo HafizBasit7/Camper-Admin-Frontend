@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Paper, Box, Typography, Button, ButtonGroup } from '@mui/material';
 import { useTheme, alpha } from '@mui/material/styles';
 import {
@@ -14,6 +15,7 @@ import {
 
 const RevenueChart = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const [timeRange, setTimeRange] = React.useState('monthly');
 
   const monthlyData = [
@@ -64,7 +66,7 @@ const RevenueChart = () => {
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h6" sx={{ fontWeight: 600 }}>
-          Revenue & Commission
+          {t('dashboard.revenueChart.title')}
         </Typography>
         <ButtonGroup variant="outlined" size="small" sx={{ borderRadius: 2 }}>
           {['daily', 'weekly', 'monthly'].map((period) => (
@@ -84,7 +86,7 @@ const RevenueChart = () => {
                 })
               }}
             >
-              {period.charAt(0).toUpperCase() + period.slice(1)}
+              {t(`dashboard.revenueChart.timeRanges.${period}`)}
             </Button>
           ))}
         </ButtonGroup>
@@ -113,7 +115,7 @@ const RevenueChart = () => {
             <Line
               type="monotone"
               dataKey="revenue"
-              name="Revenue"
+              name={t('dashboard.revenueChart.series.revenue')}
               stroke={theme.palette.primary.main}
               strokeWidth={2}
               dot={{ r: 4 }}
@@ -122,7 +124,7 @@ const RevenueChart = () => {
             <Line
               type="monotone"
               dataKey="commission"
-              name="Commission"
+              name={t('dashboard.revenueChart.series.commission')}
               stroke={theme.palette.success.main}
               strokeWidth={2}
               dot={{ r: 4 }}

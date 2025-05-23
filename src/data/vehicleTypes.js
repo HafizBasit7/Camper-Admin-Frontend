@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export const VEHICLE_STATUS = {
   DRAFT: 'DRAFT',
   PENDING: 'PENDING',
@@ -46,17 +48,17 @@ export const getStatusColor = (status) => {
 export const getStatusLabel = (status) => {
   switch (status) {
     case VEHICLE_STATUS.DRAFT:
-      return 'Draft';
+      return i18next.t('vehicles.status.draft');
     case VEHICLE_STATUS.PENDING:
-      return 'Pending Approval';
+      return i18next.t('vehicles.status.pending');
     case VEHICLE_STATUS.APPROVED:
-      return 'Approved';
+      return i18next.t('vehicles.status.approved');
     case VEHICLE_STATUS.REJECTED:
-      return 'Rejected';
+      return i18next.t('vehicles.status.rejected');
     case VEHICLE_STATUS.SUSPENDED:
-      return 'Suspended';
+      return i18next.t('vehicles.status.suspended');
     case VEHICLE_STATUS.UNVERIFIED:
-      return 'Unverified';
+      return i18next.t('vehicles.status.unverified');
     default:
       return status;
   }

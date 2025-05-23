@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export const WITHDRAWAL_STATUS = {
   PENDING: 'PENDING',
   PROCESSING: 'PROCESSING',
@@ -30,14 +32,14 @@ export const getWithdrawalStatusColor = (status) => {
 export const getWithdrawalStatusLabel = (status) => {
   switch (status) {
     case WITHDRAWAL_STATUS.PENDING:
-      return 'Pending';
+      return i18next.t('withdrawals.status.pending');
     case WITHDRAWAL_STATUS.PROCESSING:
-      return 'Processing';
+      return i18next.t('withdrawals.status.processing');
     case WITHDRAWAL_STATUS.COMPLETED:
-      return 'Completed';
+      return i18next.t('withdrawals.status.completed');
     case WITHDRAWAL_STATUS.REJECTED:
-      return 'Rejected';
+      return i18next.t('withdrawals.status.rejected');
     default:
-      return 'Unknown';
+      return i18next.t('withdrawals.status.unknown');
   }
 }; 

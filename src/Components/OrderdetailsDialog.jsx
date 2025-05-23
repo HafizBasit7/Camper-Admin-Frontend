@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogActions,
@@ -16,6 +17,8 @@ import { format } from 'date-fns';
 import { getStatusColor } from '../data/orderTypes';
 
 const OrderDetailsDialog = ({ open, order, onClose }) => {
+  const { t } = useTranslation();
+  
   if (!order) return null;
 
   // Format date to readable string
@@ -38,7 +41,7 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
       <DialogTitle sx={{ pb: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h6" component="div" fontWeight={600}>
-            Order Details
+            {t('orders.dialog.title')}
           </Typography>
           <Chip 
             label={order.status} 
@@ -57,13 +60,13 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
           {/* Order Info */}
           <Grid item xs={12}>
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-              Order Information
+              {t('orders.dialog.orderInfo')}
             </Typography>
             <Paper variant="outlined" sx={{ p: 2 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="body2" color="text.secondary">
-                    Order ID
+                    {t('orders.dialog.orderId')}
                   </Typography>
                   <Typography variant="body1" fontWeight={500}>
                     {order.id}
@@ -71,7 +74,7 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="body2" color="text.secondary">
-                    Payment Status
+                    {t('orders.dialog.paymentStatus')}
                   </Typography>
                   <Typography 
                     variant="body1" 
@@ -88,7 +91,7 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="body2" color="text.secondary">
-                    Created At
+                    {t('orders.dialog.createdAt')}
                   </Typography>
                   <Typography variant="body1">
                     {formatDate(order.createdAt)}
@@ -96,7 +99,7 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="body2" color="text.secondary">
-                    Last Updated
+                    {t('orders.dialog.lastUpdated')}
                   </Typography>
                   <Typography variant="body1">
                     {formatDate(order.updatedAt)}
@@ -104,7 +107,7 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" color="text.secondary">
-                    Total Amount
+                    {t('orders.dialog.totalAmount')}
                   </Typography>
                   <Typography variant="body1" fontWeight={600} color="primary.main">
                     ${order.totalAmount.toFixed(2)}
@@ -117,28 +120,28 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
           {/* Customer and Car Info */}
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-              Customer Information
+              {t('orders.dialog.customerInfo')}
             </Typography>
             <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
               <Typography variant="body1" fontWeight={500}>
                 {order.customerName}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Customer ID: CUST-{order.id.split('-')[1]}
+                {t('orders.dialog.customerId')}: CUST-{order.id.split('-')[1]}
               </Typography>
             </Paper>
           </Grid>
 
           <Grid item xs={12} md={6}>
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-              Vehicle Information
+              {t('orders.dialog.vehicleInfo')}
             </Typography>
             <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
               <Typography variant="body1" fontWeight={500}>
                 {order.carModel}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Plate Number: {order.plateNumber}
+                {t('orders.dialog.plateNumber')}: {order.plateNumber}
               </Typography>
             </Paper>
           </Grid>
@@ -146,7 +149,7 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
           {/* Services */}
           <Grid item xs={12}>
             <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-              Services
+              {t('orders.dialog.services')}
             </Typography>
             <Paper variant="outlined" sx={{ p: 2 }}>
               <Grid container spacing={1}>
@@ -171,11 +174,11 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
           {order.notes && (
             <Grid item xs={12}>
               <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-                Notes
+                {t('orders.dialog.notes')}
               </Typography>
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="body1">
-                  {order.notes || 'No notes available'}
+                  {order.notes || t('orders.dialog.noNotes')}
                 </Typography>
               </Paper>
             </Grid>
@@ -188,7 +191,7 @@ const OrderDetailsDialog = ({ open, order, onClose }) => {
           variant="outlined" 
           color="secondary"
         >
-          Close
+          {t('orders.dialog.close')}
         </Button>
       </DialogActions>
     </Dialog>

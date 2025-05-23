@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Grid,
   Paper,
@@ -83,6 +84,7 @@ const StatCard = ({ title, value, icon, color }) => {
 };
 
 const VehicleStats = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const stats = getVehicleStats(mockVehicles);
 
@@ -90,7 +92,7 @@ const VehicleStats = () => {
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Total Vehicles"
+          title={t('vehicles.stats.totalVehicles')}
           value={stats.total}
           icon={<DirectionsCar sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.primary.main}
@@ -98,7 +100,7 @@ const VehicleStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Pending Approval"
+          title={t('vehicles.stats.pendingApproval')}
           value={stats.pending}
           icon={<PendingActions sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.warning.main}
@@ -106,7 +108,7 @@ const VehicleStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Approved"
+          title={t('vehicles.stats.approved')}
           value={stats.approved}
           icon={<CheckCircle sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.success.main}
@@ -114,7 +116,7 @@ const VehicleStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Reported Issues"
+          title={t('vehicles.stats.reportedIssues')}
           value={stats.reported}
           icon={<Warning sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.error.main}
@@ -122,7 +124,7 @@ const VehicleStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Suspended"
+          title={t('vehicles.stats.suspended')}
           value={stats.suspended}
           icon={<Block sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.error.dark}
@@ -130,7 +132,7 @@ const VehicleStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Unverified"
+          title={t('vehicles.stats.unverified')}
           value={stats.unverified}
           icon={<Help sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.warning.dark}
@@ -138,7 +140,7 @@ const VehicleStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Rejected"
+          title={t('vehicles.stats.rejected')}
           value={stats.rejected}
           icon={<Cancel sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.error.light}

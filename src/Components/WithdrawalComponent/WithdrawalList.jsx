@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Paper,
@@ -21,6 +22,7 @@ import WithdrawalActionMenu from './WithdrawalActionMenu';
 import WithdrawalDetailsDialog from './WithdrawalDetailsDialog';
 
 const WithdrawalList = ({ currentTab, filters }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const [selectedWithdrawal, setSelectedWithdrawal] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -70,13 +72,13 @@ const WithdrawalList = ({ currentTab, filters }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 600 }}>Owner</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Vehicle</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Amount</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Payment Method</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Request Date</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
-              <TableCell align="right" sx={{ fontWeight: 600 }}>Actions</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('withdrawals.table.owner')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('withdrawals.table.vehicle')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('withdrawals.table.amount')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('withdrawals.table.paymentMethod')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('withdrawals.table.requestDate')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('withdrawals.table.status')}</TableCell>
+              <TableCell align="right" sx={{ fontWeight: 600 }}>{t('withdrawals.table.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -115,7 +117,7 @@ const WithdrawalList = ({ currentTab, filters }) => {
                   />
                 </TableCell>
                 <TableCell align="right">
-                  <Tooltip title="View Details">
+                  <Tooltip title={t('withdrawals.actions.viewDetails')}>
                     <IconButton 
                       size="small" 
                       color="primary"
@@ -131,7 +133,7 @@ const WithdrawalList = ({ currentTab, filters }) => {
                   </Tooltip>
                   {withdrawal.status === WITHDRAWAL_STATUS.PENDING && (
                     <>
-                      <Tooltip title="Approve">
+                      <Tooltip title={t('withdrawals.actions.approve')}>
                         <IconButton 
                           size="small" 
                           color="success"
@@ -144,7 +146,7 @@ const WithdrawalList = ({ currentTab, filters }) => {
                           <CheckCircle />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Reject">
+                      <Tooltip title={t('withdrawals.actions.reject')}>
                         <IconButton 
                           size="small" 
                           color="error"
@@ -159,7 +161,7 @@ const WithdrawalList = ({ currentTab, filters }) => {
                       </Tooltip>
                     </>
                   )}
-                  <Tooltip title="More Actions">
+                  <Tooltip title={t('withdrawals.actions.more')}>
                     <IconButton
                       size="small"
                       onClick={(e) => handleActionClick(e, withdrawal)}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   TextField,
@@ -10,6 +11,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { VEHICLE_STATUS, getStatusLabel } from '../../data/vehicleTypes';
 
 const VehicleFilters = ({ filters, onFilterChange }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const handleSearchChange = (event) => {
@@ -30,7 +32,7 @@ const VehicleFilters = ({ filters, onFilterChange }) => {
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
-            label="Search Vehicles"
+            label={t('vehicles.filters.search')}
             variant="outlined"
             value={filters.search}
             onChange={handleSearchChange}
@@ -41,13 +43,13 @@ const VehicleFilters = ({ filters, onFilterChange }) => {
           <TextField
             fullWidth
             select
-            label="Status"
+            label={t('vehicles.filters.status')}
             variant="outlined"
             value={filters.status || ''}
             onChange={handleStatusChange}
             size="small"
           >
-            <MenuItem value="">All Status</MenuItem>
+            <MenuItem value="">{t('vehicles.filters.allStatus')}</MenuItem>
             {Object.values(VEHICLE_STATUS).map((status) => (
               <MenuItem key={status} value={status}>
                 {getStatusLabel(status)}
@@ -57,7 +59,7 @@ const VehicleFilters = ({ filters, onFilterChange }) => {
         </Grid>
         <Grid item xs={12} md={4}>
           <DatePicker
-            label="Date Range"
+            label={t('vehicles.filters.dateRange')}
             value={filters.dateRange}
             onChange={handleDateChange}
             slotProps={{

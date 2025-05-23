@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Grid,
   Paper,
@@ -81,6 +82,7 @@ const StatCard = ({ title, value, icon, color }) => {
 };
 
 const WithdrawalStats = () => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const stats = getWithdrawalStats(mockWithdrawals);
 
@@ -88,7 +90,7 @@ const WithdrawalStats = () => {
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Total Withdrawals"
+          title={t('withdrawals.stats.totalWithdrawals')}
           value={stats.total}
           icon={<AccountBalance sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.primary.main}
@@ -96,7 +98,7 @@ const WithdrawalStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Pending Amount"
+          title={t('withdrawals.stats.pendingAmount')}
           value={`$${stats.pendingAmount.toFixed(2)}`}
           icon={<PendingActions sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.warning.main}
@@ -104,7 +106,7 @@ const WithdrawalStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Completed"
+          title={t('withdrawals.stats.completed')}
           value={stats.completed}
           icon={<CheckCircle sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.success.main}
@@ -112,7 +114,7 @@ const WithdrawalStats = () => {
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <StatCard
-          title="Total Amount"
+          title={t('withdrawals.stats.totalAmount')}
           value={`$${stats.totalAmount.toFixed(2)}`}
           icon={<AttachMoney sx={{ color: '#fff', fontSize: 28 }} />}
           color={theme.palette.info.main}

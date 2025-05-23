@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Container,
@@ -37,6 +38,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 const Settings = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(0);
   const [commission, setCommission] = useState(10);
   const [isSaved, setIsSaved] = useState(false);
@@ -92,7 +94,7 @@ const Settings = () => {
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 3, fontWeight: 600 }}>
-        Settings
+        {t('settings.title')}
       </Typography>
 
       <Box sx={{ mb: 3 }}>
@@ -112,11 +114,11 @@ const Settings = () => {
             }
           }}
         >
-          <Tab label="General" />
-          <Tab label="Branding" />
-          <Tab label="Commission & Pricing" />
-          <Tab label="Email" />
-          <Tab label="Notifications" />
+          <Tab label={t('settings.tabs.general')} />
+          <Tab label={t('settings.tabs.branding')} />
+          <Tab label={t('settings.tabs.commission')} />
+          <Tab label={t('settings.tabs.email')} />
+          <Tab label={t('settings.tabs.notifications')} />
         </Tabs>
       </Box>
 
@@ -130,12 +132,12 @@ const Settings = () => {
           }}
         >
           <CardContent>
-            <Typography variant="h6" gutterBottom>General Settings</Typography>
+            <Typography variant="h6" gutterBottom>{t('settings.general.title')}</Typography>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Company Name"
+                  label={t('settings.general.companyName')}
                   value={settings.companyName}
                   margin="normal"
                 />
@@ -143,7 +145,7 @@ const Settings = () => {
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Email"
+                  label={t('settings.general.email')}
                   value={settings.email}
                   margin="normal"
                 />
@@ -151,7 +153,7 @@ const Settings = () => {
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Phone"
+                  label={t('settings.general.phone')}
                   value={settings.phone}
                   margin="normal"
                 />
@@ -159,7 +161,7 @@ const Settings = () => {
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Address"
+                  label={t('settings.general.address')}
                   value={settings.address}
                   margin="normal"
                 />
@@ -167,7 +169,7 @@ const Settings = () => {
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Date Format"
+                  label={t('settings.general.dateFormat')}
                   value={settings.dateFormat}
                   margin="normal"
                 />
@@ -175,7 +177,7 @@ const Settings = () => {
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Time Format"
+                  label={t('settings.general.timeFormat')}
                   value={settings.timeFormat}
                   margin="normal"
                 />
@@ -186,7 +188,7 @@ const Settings = () => {
                   startIcon={<SaveIcon />}
                   sx={{ mt: 2 }}
                 >
-                  Save Settings
+                  {t('settings.general.save')}
                 </Button>
               </Grid>
             </Grid>
@@ -204,7 +206,7 @@ const Settings = () => {
           }}
         >
           <CardContent>
-            <Typography variant="h6" gutterBottom>Branding Settings</Typography>
+            <Typography variant="h6" gutterBottom>{t('settings.branding.title')}</Typography>
             <Grid container spacing={4}>
               <Grid item xs={12} md={4}>
                 <Box sx={{ textAlign: 'center', p: 2 }}>
@@ -225,7 +227,7 @@ const Settings = () => {
                     }}
                   >
                     {!settings.logoLight && (
-                      <Typography color="text.secondary">Logo Preview</Typography>
+                      <Typography color="text.secondary">{t('settings.branding.lightLogo.preview')}</Typography>
                     )}
                   </Box>
                   <Button
@@ -234,7 +236,7 @@ const Settings = () => {
                     startIcon={<CloudUploadIcon />}
                     sx={{ textTransform: 'none' }}
                   >
-                    Upload Light Logo
+                    {t('settings.branding.lightLogo.upload')}
                     <VisuallyHiddenInput 
                       type="file" 
                       accept="image/*"
@@ -263,7 +265,7 @@ const Settings = () => {
                     }}
                   >
                     {!settings.logoDark && (
-                      <Typography color="white">Logo Preview</Typography>
+                      <Typography color="white">{t('settings.branding.darkLogo.preview')}</Typography>
                     )}
                   </Box>
                   <Button
@@ -272,7 +274,7 @@ const Settings = () => {
                     startIcon={<CloudUploadIcon />}
                     sx={{ textTransform: 'none' }}
                   >
-                    Upload Dark Logo
+                    {t('settings.branding.darkLogo.upload')}
                     <VisuallyHiddenInput 
                       type="file" 
                       accept="image/*"
@@ -300,7 +302,7 @@ const Settings = () => {
                     }}
                   >
                     {!settings.favicon && (
-                      <Typography color="text.secondary">Favicon Preview</Typography>
+                      <Typography color="text.secondary">{t('settings.branding.favicon.preview')}</Typography>
                     )}
                   </Box>
                   <Button
@@ -309,7 +311,7 @@ const Settings = () => {
                     startIcon={<CloudUploadIcon />}
                     sx={{ textTransform: 'none' }}
                   >
-                    Upload Favicon
+                    {t('settings.branding.favicon.upload')}
                     <VisuallyHiddenInput 
                       type="file" 
                       accept="image/*"
@@ -324,7 +326,7 @@ const Settings = () => {
                   variant="contained" 
                   startIcon={<SaveIcon />}
                 >
-                  Save Branding
+                  {t('settings.branding.save')}
                 </Button>
               </Grid>
             </Grid>
@@ -342,37 +344,37 @@ const Settings = () => {
           }}
         >
           <CardContent>
-            <Typography variant="h6" gutterBottom>Commission & Pricing Settings</Typography>
+            <Typography variant="h6" gutterBottom>{t('settings.commission.title')}</Typography>
             {isSaved && (
               <Alert severity="success" sx={{ mb: 3 }}>
-                Settings saved successfully!
+                {t('settings.commission.success')}
               </Alert>
             )}
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel htmlFor="commission-rate">Commission Rate</InputLabel>
+                  <InputLabel htmlFor="commission-rate">{t('settings.commission.commissionRate.label')}</InputLabel>
                   <OutlinedInput
                     id="commission-rate"
                     value={commission}
                     onChange={handleCommissionChange}
                     endAdornment={<InputAdornment position="end"><PercentIcon /></InputAdornment>}
-                    label="Commission Rate"
+                    label={t('settings.commission.commissionRate.label')}
                     type="number"
                   />
                   <FormHelperText>
-                    This is the percentage you will earn from each completed rental after tax deductions.
+                    {t('settings.commission.commissionRate.helper')}
                   </FormHelperText>
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={6}>
                 <FormControl fullWidth margin="normal">
-                  <InputLabel htmlFor="tax-rate">Tax Rate</InputLabel>
+                  <InputLabel htmlFor="tax-rate">{t('settings.commission.taxRate.label')}</InputLabel>
                   <OutlinedInput
                     id="tax-rate"
                     value={settings.taxRate}
                     endAdornment={<InputAdornment position="end"><PercentIcon /></InputAdornment>}
-                    label="Tax Rate"
+                    label={t('settings.commission.taxRate.label')}
                     type="number"
                   />
                 </FormControl>
@@ -380,24 +382,24 @@ const Settings = () => {
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Currency"
+                  label={t('settings.commission.currency.label')}
                   value={settings.currency}
                   margin="normal"
                 />
               </Grid>
               <Grid item xs={12}>
                 <Box sx={{ bgcolor: 'primary.verylight', p: 2, borderRadius: 2, mt: 2 }}>
-                  <Typography variant="body1" fontWeight={500}>How Commission Works</Typography>
+                  <Typography variant="body1" fontWeight={500}>{t('settings.commission.howItWorks.title')}</Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                    When a rental transaction is completed, the system will calculate your commission as follows:
+                    {t('settings.commission.howItWorks.description')}
                     <br />
-                    1. Total rental amount is calculated
+                    {t('settings.commission.howItWorks.steps.1')}
                     <br />
-                    2. Tax is deducted from the total (if applicable)
+                    {t('settings.commission.howItWorks.steps.2')}
                     <br />
-                    3. Commission percentage ({commission}%) is applied to the post-tax amount
+                    {t('settings.commission.howItWorks.steps.3', { rate: commission })}
                     <br />
-                    4. This commission is added to your earnings dashboard
+                    {t('settings.commission.howItWorks.steps.4')}
                   </Typography>
                 </Box>
               </Grid>
@@ -408,7 +410,7 @@ const Settings = () => {
                   onClick={handleSaveSettings}
                   sx={{ mt: 2 }}
                 >
-                  Save Commission Settings
+                  {t('settings.commission.save')}
                 </Button>
               </Grid>
             </Grid>

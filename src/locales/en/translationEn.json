@@ -1,0 +1,522 @@
+{
+  "login": {
+    "title": "Admin Login",
+    "email": {
+      "label": "Email Address",
+      "placeholder": "Enter your email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password"
+    },
+    "signIn": "Sign In",
+    "togglePassword": "toggle password visibility",
+    "errors": {
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidCredentials": "Invalid email or password",
+      "serverError": "An error occurred. Please try again later"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "users": "Users",
+    "vehicles": "Vehicles",
+    "withdrawals": "Withdrawals",
+    "blog": "Blog",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "header": {
+    "title": "Camper Dooley Admin",
+    "admin": "Admin",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "pendingApprovals": "Pending Approvals",
+    "pendingUsers": "Pending Users",
+    "pendingVehicles": "Pending Vehicles",
+    "stats": {
+      "totalUsers": "Total Users",
+      "totalVehicles": "Total Vehicles",
+      "totalOrders": "Total Orders",
+      "ongoingOrders": "Ongoing Orders",
+      "completedOrders": "Completed Orders",
+      "cancelledOrders": "Cancelled Orders",
+      "earnedCommissions": "Earned Commissions",
+      "dismissedCases": "Dismissed Cases",
+      "newRequests": "New Requests",
+      "pendingOrders": "Pending Orders"
+    },
+    "ordersChart": {
+      "title": "Orders Overview",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "timeRanges": {
+        "yearly": "Yearly",
+        "monthly": "Monthly",
+        "weekly": "Weekly",
+        "daily": "Daily"
+      },
+      "series": {
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "ongoing": "Ongoing"
+      }
+    },
+    "revenueChart": {
+      "title": "Revenue & Commission",
+      "timeRanges": {
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly"
+      },
+      "series": {
+        "revenue": "Revenue",
+        "commission": "Commission"
+      }
+    },
+    "pendingSection": {
+      "pending": "pending",
+      "review": "Review",
+      "viewAll": "View all {{count}} pending {{type}}",
+      "submitted": "Submitted: {{date}}",
+      "status": {
+        "pending": "PENDING",
+        "review": "REVIEW"
+      }
+    },
+    "recentActivities": {
+      "title": "Recent Activities",
+      "viewAll": "View all activities",
+      "status": {
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "completed": "Completed",
+        "dismissed": "Dismissed",
+        "cancelled": "Cancelled"
+      },
+      "activities": {
+        "userApproved": "User {{user}} was approved",
+        "vehicleRejected": "Vehicle {{vehicleName}} from {{user}} was rejected",
+        "orderCompleted": "Order {{orderNumber}} by {{user}} was completed",
+        "caseDismissed": "Case {{caseNumber}} by {{user}} was dismissed",
+        "orderCancelled": "Order {{orderNumber}} by {{user}} was cancelled"
+      }
+    }
+  },
+  "pendingItems": {
+    "title": "Pending {{type}}",
+    "subtitle": "Review and manage pending {{type}}",
+    "back": "Back",
+    "tabs": {
+      "all": "All",
+      "pending": "Pending",
+      "underReview": "Under Review"
+    },
+    "search": "Search",
+    "type": "Type",
+    "allTypes": "All Types",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "owner": "Owner",
+      "type": "Type",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "dialog": {
+      "details": "Details",
+      "status": "Status",
+      "dateSubmitted": "Date Submitted",
+      "cancel": "Cancel",
+      "reject": "Reject",
+      "approve": "Approve"
+    }
+  },
+  "orders": {
+    "title": "Order Management",
+    "subtitle": "View and manage all orders from a single dashboard",
+    "table": {
+      "orderId": "Order ID",
+      "customer": "Customer",
+      "carDetails": "Car Details",
+      "status": "Status",
+      "created": "Created",
+      "updated": "Updated",
+      "view": "View",
+      "noOrders": "No orders found"
+    },
+    "dialog": {
+      "title": "Order Details",
+      "orderInfo": "Order Information",
+      "customerInfo": "Customer Information",
+      "vehicleInfo": "Vehicle Information",
+      "services": "Services",
+      "notes": "Notes",
+      "noNotes": "No notes available",
+      "close": "Close",
+      "orderId": "Order ID",
+      "paymentStatus": "Payment Status",
+      "createdAt": "Created At",
+      "lastUpdated": "Last Updated",
+      "totalAmount": "Total Amount",
+      "customerId": "Customer ID",
+      "plateNumber": "Plate Number"
+    },
+    "status": {
+      "new": "New placed",
+      "ongoing": "Ongoing",
+      "completed": "Completed",
+      "handovered": "Handovered",
+      "dismissed": "Dismissed",
+      "issue": "Request for any issues"
+    },
+    "actions": {
+      "startOrder": "Start Order",
+      "dismiss": "Dismiss",
+      "complete": "Complete",
+      "reportIssue": "Report Issue",
+      "handover": "Handover",
+      "reopen": "Reopen",
+      "resolve": "Resolve"
+    },
+    "tabs": {
+      "all": "All",
+      "new": "New placed",
+      "ongoing": "Ongoing",
+      "completed": "Completed",
+      "handovered": "Handovered",
+      "dismissed": "Dismissed",
+      "issue": "Request for any issues"
+    }
+  },
+  "users": {
+    "title": "User Management",
+    "search": {
+      "placeholder": "Search users by name or email"
+    },
+    "tabs": {
+      "all": "All Users",
+      "admins": "Admins",
+      "users": "Users"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "verification": "Verification",
+      "joinDate": "Join Date",
+      "vehiclesUploaded": "Vehicles Uploaded",
+      "vehiclesBooked": "Vehicles Booked",
+      "actions": "Actions",
+      "noUsers": "No users found"
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "User"
+    },
+    "status": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "verification": {
+      "verified": "Verified",
+      "notVerified": "Not Verified"
+    },
+    "sort": {
+      "label": "Sort By",
+      "name": "Name",
+      "email": "Email",
+      "joinDate": "Join Date",
+      "vehiclesUploaded": "Vehicles Uploaded",
+      "vehiclesBooked": "Vehicles Booked",
+      "ascending": "Sort Ascending",
+      "descending": "Sort Descending"
+    },
+    "actions": {
+      "suspend": "Suspend User",
+      "activate": "Activate User",
+      "more": "More Actions"
+    },
+    "dialog": {
+      "suspendTitle": "Suspend {{name}}'s Account",
+      "activateTitle": "Activate {{name}}'s Account",
+      "suspendMessage": "Are you sure you want to suspend this user? The user will not be able to access the platform until reactivated.",
+      "activateMessage": "Are you sure you want to activate this user? The user will regain access to the platform.",
+      "suspensionReason": "Reason for suspension",
+      "cancel": "Cancel",
+      "suspend": "Suspend User",
+      "activate": "Activate User"
+    }
+  },
+  "vehicles": {
+    "title": "Vehicle Management",
+    "backToOwners": "Back to Owners",
+    "vehiclesForOwner": "Vehicles for {{ownerName}}",
+    "manageVehicles": "Manage and monitor vehicles for this owner",
+    "tabs": {
+      "all": "All Vehicles",
+      "approved": "Approved",
+      "pending": "Pending Approval",
+      "drafts": "Drafts",
+      "changeRequests": "Change Requests",
+      "reported": "Reported Issues"
+    },
+    "status": {
+      "draft": "Draft",
+      "pending": "Pending Approval",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "suspended": "Suspended",
+      "unverified": "Unverified"
+    },
+    "stats": {
+      "totalVehicles": "Total Vehicles",
+      "pendingApproval": "Pending Approval",
+      "approved": "Approved",
+      "reportedIssues": "Reported Issues",
+      "suspended": "Suspended",
+      "unverified": "Unverified",
+      "rejected": "Rejected"
+    },
+    "filters": {
+      "search": "Search Vehicles",
+      "status": "Status",
+      "allStatus": "All Status",
+      "dateRange": "Date Range"
+    },
+    "list": {
+      "noVehicles": "No vehicles found matching the current filters",
+      "table": {
+        "vehicleName": "Vehicle Name",
+        "owner": "Owner",
+        "type": "Type",
+        "location": "Location",
+        "status": "Status",
+        "price": "Price",
+        "lastUpdated": "Last Updated",
+        "actions": "Actions"
+      },
+      "actions": {
+        "viewDetails": "View Details",
+        "viewChangeRequests": "View Change Requests",
+        "viewReports": "View Reports",
+        "approve": "Approve",
+        "markPending": "Mark as Pending",
+        "suspend": "Suspend",
+        "reject": "Reject"
+      }
+    },
+    "owners": {
+      "title": "Vehicle Owners",
+      "subtitle": "Manage vehicles by owner",
+      "table": {
+        "ownerName": "Owner Name",
+        "totalVehicles": "Total Vehicles",
+        "approved": "Approved",
+        "pending": "Pending",
+        "drafts": "Drafts",
+        "reported": "Reported",
+        "actions": "Actions"
+      },
+      "actions": {
+        "viewVehicles": "View Vehicles"
+      }
+    }
+  },
+  "blog": {
+    "title": "Blog Management",
+    "subtitle": "Create and manage blog posts",
+    "newPost": "New Blog Post",
+    "card": {
+      "uploadImage": "Click to upload image",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "dialog": {
+      "newTitle": "New Blog Post",
+      "editTitle": "Edit Blog Post",
+      "fields": {
+        "title": "Title",
+        "description": "Description",
+        "content": "Content",
+        "category": "Category",
+        "status": "Status",
+        "image": "Blog Image"
+      },
+      "categories": {
+        "travel": "Travel",
+        "camping": "Camping",
+        "adventure": "Adventure",
+        "tips": "Tips & Tricks"
+      },
+      "status": {
+        "draft": "Draft",
+        "published": "Published"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "create": "Create",
+        "update": "Update"
+      }
+    }
+  },
+  "reports": {
+    "title": "Reports Management",
+    "subtitle": "View and manage all reported issues",
+    "tabs": {
+      "all": "All Reports",
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "dismissed": "Dismissed"
+    },
+    "search": {
+      "placeholder": "Search by vehicle name, owner, or reporter"
+    },
+    "table": {
+      "vehicleName": "Vehicle Name",
+      "owner": "Owner",
+      "reportedBy": "Reported By",
+      "issue": "Issue",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "dismissed": "Dismissed",
+      "processing": "Processing"
+    },
+    "dialog": {
+      "title": "Report Details",
+      "vehicleInfo": "Vehicle Information",
+      "reporterInfo": "Reporter Information",
+      "issueDetails": "Issue Details",
+      "status": "Status",
+      "date": "Date",
+      "notes": "Notes",
+      "noNotes": "No notes available",
+      "actions": {
+        "close": "Close",
+        "resolve": "Resolve",
+        "dismiss": "Dismiss"
+      }
+    }
+  },
+  "withdrawals": {
+    "title": "Withdrawal Management",
+    "subtitle": "Manage and process withdrawal requests from vehicle owners",
+    "tabs": {
+      "all": "All Requests",
+      "new": "New Requests",
+      "sent": "Sent",
+      "received": "Received"
+    },
+    "stats": {
+      "totalWithdrawals": "Total Withdrawals",
+      "pendingAmount": "Pending Amount",
+      "completed": "Completed",
+      "totalAmount": "Total Amount"
+    },
+    "filters": {
+      "search": {
+        "label": "Search",
+        "placeholder": "Search by owner or vehicle..."
+      },
+      "status": {
+        "label": "Status",
+        "all": "All Statuses"
+      },
+      "dateRange": "Date Range"
+    },
+    "table": {
+      "owner": "Owner",
+      "vehicle": "Vehicle",
+      "amount": "Amount",
+      "paymentMethod": "Payment Method",
+      "requestDate": "Request Date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "completed": "Completed",
+      "rejected": "Rejected"
+    },
+    "actions": {
+      "viewDetails": "View Details",
+      "approve": "Approve",
+      "reject": "Reject",
+      "more": "More Actions"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "general": "General",
+      "branding": "Branding",
+      "commission": "Commission & Pricing",
+      "email": "Email",
+      "notifications": "Notifications"
+    },
+    "general": {
+      "title": "General Settings",
+      "companyName": "Company Name",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "dateFormat": "Date Format",
+      "timeFormat": "Time Format",
+      "save": "Save Settings"
+    },
+    "branding": {
+      "title": "Branding Settings",
+      "lightLogo": {
+        "preview": "Logo Preview",
+        "upload": "Upload Light Logo"
+      },
+      "darkLogo": {
+        "preview": "Logo Preview",
+        "upload": "Upload Dark Logo"
+      },
+      "favicon": {
+        "preview": "Favicon Preview",
+        "upload": "Upload Favicon"
+      },
+      "save": "Save Branding"
+    },
+    "commission": {
+      "title": "Commission & Pricing Settings",
+      "success": "Settings saved successfully!",
+      "commissionRate": {
+        "label": "Commission Rate",
+        "helper": "This is the percentage you will earn from each completed rental after tax deductions."
+      },
+      "taxRate": {
+        "label": "Tax Rate"
+      },
+      "currency": {
+        "label": "Currency"
+      },
+      "howItWorks": {
+        "title": "How Commission Works",
+        "description": "When a rental transaction is completed, the system will calculate your commission as follows:",
+        "steps": {
+          "1": "Total rental amount is calculated",
+          "2": "Tax is deducted from the total (if applicable)",
+          "3": "Commission percentage ({{rate}}%) is applied to the post-tax amount",
+          "4": "This commission is added to your earnings dashboard"
+        }
+      },
+      "save": "Save Commission Settings"
+    }
+  }
+}

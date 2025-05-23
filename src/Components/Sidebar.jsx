@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Drawer,
   List,
@@ -15,22 +16,22 @@ import GroupIcon from '@mui/icons-material/Group';
 import logo from '../assets/logo.png'
 
 const drawerWidth = 240
-const navItems = [
-  { text: 'Dashboard', icon: <Dashboard />, path: '/' },
-  { text: 'Orders', icon: <People />, path: '/orders' },
-  { text: 'Users', icon: <GroupIcon />, path: '/users' },
-  { text: 'Vehicles', icon: <Settings />, path: '/vehicle' },
-  { text: 'Withdrawals', icon: <AccountBalance />, path: '/withdrawals' },
-  { text: 'Blog', icon: <Article />, path: '/blog' },
-  { text: 'Reports', icon: <Report />, path: '/reports' },
-  { text: 'Settings', icon: <Settings />, path: '/settings' },
-   
-
-]
 
 const Sidebar = () => {
   const location = useLocation()
   const theme = useTheme()
+  const { t } = useTranslation()
+
+  const navItems = [
+    { text: t('sidebar.dashboard'), icon: <Dashboard />, path: '/dashboard' },
+    { text: t('sidebar.orders'), icon: <People />, path: '/orders' },
+    { text: t('sidebar.users'), icon: <GroupIcon />, path: '/users' },
+    { text: t('sidebar.vehicles'), icon: <Settings />, path: '/vehicle' },
+    { text: t('sidebar.withdrawals'), icon: <AccountBalance />, path: '/withdrawals' },
+    { text: t('sidebar.blog'), icon: <Article />, path: '/blog' },
+    { text: t('sidebar.reports'), icon: <Report />, path: '/reports' },
+    { text: t('sidebar.settings'), icon: <Settings />, path: '/settings' },
+  ]
 
   return (
     <Drawer

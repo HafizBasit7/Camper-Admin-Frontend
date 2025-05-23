@@ -1,31 +1,33 @@
+import i18next from 'i18next';
+
 export const ORDER_STATUS = {
-  NEW: 'New placed',
-  ONGOING: 'Ongoing',
-  COMPLETED: 'Completed',
-  HANDOVERED: 'Handovered',
-  DISMISSED: 'Dismissed',
-  ISSUE: 'Request for any issues'
+  NEW: i18next.t('orders.status.new'),
+  ONGOING: i18next.t('orders.status.ongoing'),
+  COMPLETED: i18next.t('orders.status.completed'),
+  HANDOVERED: i18next.t('orders.status.handovered'),
+  DISMISSED: i18next.t('orders.status.dismissed'),
+  ISSUE: i18next.t('orders.status.issue')
 };
 
 export const ORDER_ACTIONS = {
   [ORDER_STATUS.NEW]: [
-    { label: 'Start Order', value: 'start', color: 'primary' },
-    { label: 'Dismiss', value: 'dismiss', color: 'error' }
+    { label: i18next.t('orders.actions.startOrder'), value: 'start', color: 'primary' },
+    { label: i18next.t('orders.actions.dismiss'), value: 'dismiss', color: 'error' }
   ],
   [ORDER_STATUS.ONGOING]: [
-    { label: 'Complete', value: 'complete', color: 'success' },
-    { label: 'Report Issue', value: 'issue', color: 'warning' }
+    { label: i18next.t('orders.actions.complete'), value: 'complete', color: 'success' },
+    { label: i18next.t('orders.actions.reportIssue'), value: 'issue', color: 'warning' }
   ],
   [ORDER_STATUS.COMPLETED]: [
-    { label: 'Handover', value: 'handover', color: 'primary' }
+    { label: i18next.t('orders.actions.handover'), value: 'handover', color: 'primary' }
   ],
   [ORDER_STATUS.HANDOVERED]: [],
   [ORDER_STATUS.DISMISSED]: [
-    { label: 'Reopen', value: 'reopen', color: 'info' }
+    { label: i18next.t('orders.actions.reopen'), value: 'reopen', color: 'info' }
   ],
   [ORDER_STATUS.ISSUE]: [
-    { label: 'Resolve', value: 'resolve', color: 'success' },
-    { label: 'Dismiss', value: 'dismiss', color: 'error' }
+    { label: i18next.t('orders.actions.resolve'), value: 'resolve', color: 'success' },
+    { label: i18next.t('orders.actions.dismiss'), value: 'dismiss', color: 'error' }
   ]
 };
 
@@ -48,9 +50,8 @@ export const getStatusColor = (status) => {
   }
 };
 
-
 export const ORDER_TABS = [
-  { label: 'All', value: 'all' },
+  { label: i18next.t('orders.tabs.all'), value: 'all' },
   { label: ORDER_STATUS.NEW, value: 'new' },
   { label: ORDER_STATUS.ONGOING, value: 'ongoing' },
   { label: ORDER_STATUS.COMPLETED, value: 'completed' },

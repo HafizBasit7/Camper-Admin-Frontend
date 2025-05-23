@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Card, 
   CardContent, 
@@ -22,6 +23,8 @@ import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const RecentActivities = () => {
+  const { t } = useTranslation();
+
   // This would come from your API
   const activities = [
     {
@@ -78,15 +81,27 @@ const RecentActivities = () => {
   const getActivityContent = (activity) => {
     switch (activity.type) {
       case 'user_approved':
-        return `User ${activity.user} was approved`;
+        return t('dashboard.recentActivities.activities.userApproved', { user: activity.user });
       case 'vehicle_rejected':
-        return `Vehicle ${activity.vehicleName} from ${activity.user} was rejected`;
+        return t('dashboard.recentActivities.activities.vehicleRejected', { 
+          vehicleName: activity.vehicleName, 
+          user: activity.user 
+        });
       case 'order_completed':
-        return `Order ${activity.orderNumber} by ${activity.user} was completed`;
+        return t('dashboard.recentActivities.activities.orderCompleted', { 
+          orderNumber: activity.orderNumber, 
+          user: activity.user 
+        });
       case 'case_dismissed':
-        return `Case ${activity.caseNumber} by ${activity.user} was dismissed`;
+        return t('dashboard.recentActivities.activities.caseDismissed', { 
+          caseNumber: activity.caseNumber, 
+          user: activity.user 
+        });
       case 'order_cancelled':
-        return `Order ${activity.orderNumber} by ${activity.user} was cancelled`;
+        return t('dashboard.recentActivities.activities.orderCancelled', { 
+          orderNumber: activity.orderNumber, 
+          user: activity.user 
+        });
       default:
         return 'Unknown activity';
     }
@@ -99,23 +114,25 @@ const RecentActivities = () => {
       case 'approved':
         color = 'success';
         icon = <CheckCircleOutlineIcon fontSize="small" />;
-        label = 'Approved';
+        label = t('dashboard.recentActivities.status.approved');
         break;
       case 'rejected':
       case 'cancelled':
         color = 'error';
         icon = <CancelOutlinedIcon fontSize="small" />;
-        label = status === 'rejected' ? 'Rejected' : 'Cancelled';
+        label = status === 'rejected' 
+          ? t('dashboard.recentActivities.status.rejected')
+          : t('dashboard.recentActivities.status.cancelled');
         break;
       case 'completed':
         color = 'success';
         icon = <CheckCircleOutlineIcon fontSize="small" />;
-        label = 'Completed';
+        label = t('dashboard.recentActivities.status.completed');
         break;
       case 'dismissed':
         color = 'secondary';
         icon = <GavelOutlinedIcon fontSize="small" />;
-        label = 'Dismissed';
+        label = t('dashboard.recentActivities.status.dismissed');
         break;
       default:
         color = 'default';
@@ -128,7 +145,7 @@ const RecentActivities = () => {
         color={color} 
         icon={icon} 
         label={label}
-        sx={{ height: 24,minWidth:100 ,borderRadius:2}}
+        sx={{ height: 24, minWidth: 100, borderRadius: 2 }}
       />
     );
   };
@@ -143,7 +160,7 @@ const RecentActivities = () => {
       }}
     >
       <CardContent>
-        <Typography variant="h6" mb={2}>Recent Activities</Typography>
+        <Typography variant="h6" mb={2}>{t('dashboard.recentActivities.title')}</Typography>
         
         <List sx={{ p: 0 }}>
           {activities.map((activity, index) => (
@@ -181,7 +198,7 @@ const RecentActivities = () => {
             color="primary"
             sx={{ textTransform: 'none' }}
           >
-            View all activities
+            {t('dashboard.recentActivities.viewAll')}
           </Button>
         </Box>
       </CardContent>

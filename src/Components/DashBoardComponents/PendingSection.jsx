@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Box, 
   Card, 
@@ -23,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 const PendingSection = ({ title, count, type }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // This would come from your API
   const pendingItems = [
@@ -105,12 +107,12 @@ const PendingSection = ({ title, count, type }) => {
               {title}
             </Typography>
             <Chip
-              label={`${count} pending`}
+              label={`${count} ${t('dashboard.pendingSection.pending')}`}
               sx={{
                 backgroundColor: theme.palette.warning.light,
                 color: theme.palette.text.primary,
                 fontWeight: 600,
-                borderRadius:2,
+                borderRadius: 2,
                 px: 1,
                 '& .MuiChip-label': {
                   px: 2
@@ -155,13 +157,13 @@ const PendingSection = ({ title, count, type }) => {
                           {item.name}
                         </Typography>
                         <Chip
-                          label={item.status}
+                          label={t(`dashboard.pendingSection.status.${item.status.toLowerCase()}`)}
                           size="small"
                           sx={{
                             backgroundColor: getStatusColor(item.status),
                             color: 'white',
                             height: 20,
-                            borderRadius:2,
+                            borderRadius: 2,
                             '& .MuiChip-label': {
                               px: 1,
                               fontSize: '0.7rem'
@@ -176,7 +178,7 @@ const PendingSection = ({ title, count, type }) => {
                           {item.details}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          Submitted: {item.date}
+                          {t('dashboard.pendingSection.submitted', { date: item.date })}
                         </Typography>
                       </Box>
                     }
@@ -190,7 +192,7 @@ const PendingSection = ({ title, count, type }) => {
                       borderRadius: 2,
                       textTransform: 'none',
                       fontWeight: 500,
-                      ml:2,
+                      ml: 2,
                       boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                       '&:hover': {
                         transform: 'translateY(-1px)',
@@ -198,7 +200,7 @@ const PendingSection = ({ title, count, type }) => {
                       }
                     }}
                   >
-                    Review
+                    {t('dashboard.pendingSection.review')}
                   </Button>
                 </ListItem>
                 {index < pendingItems.length - 1 && (
@@ -234,14 +236,14 @@ const PendingSection = ({ title, count, type }) => {
                 fontWeight: 500,
                 px: 3,
                 py: 1,
-                color:"#000",
+                color: "#000",
                 borderRadius: 2,
                 '&:hover': {
                   backgroundColor: 'rgba(25, 118, 210, 0.08)'
                 }
               }}
             >
-              View all {count} pending {type}
+              {t('dashboard.pendingSection.viewAll', { count, type })}
             </Button>
           </Box>
         </CardContent>

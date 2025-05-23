@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Paper,
@@ -34,6 +35,7 @@ import VehicleDetailsDialog from './VehicleDetailsDialog';
 import VehicleChangeRequests from './VehicleChangeRequests';
 
 const VehicleList = ({ currentTab, filters, selectedOwner }) => {
+  const { t } = useTranslation();
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [reportsOpen, setReportsOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -142,7 +144,7 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
         }}
       >
         <Typography>
-          No vehicles found matching the current filters
+          {t('vehicles.list.noVehicles')}
         </Typography>
       </Box>
     );
@@ -164,14 +166,14 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 600 }}>Vehicle Name</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Owner</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Type</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Location</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Price</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Last Updated</TableCell>
-              <TableCell align="right" sx={{ fontWeight: 600 }}>Actions</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.vehicleName')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.owner')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.type')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.location')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.status')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.price')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.lastUpdated')}</TableCell>
+              <TableCell align="right" sx={{ fontWeight: 600 }}>{t('vehicles.list.table.actions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -224,7 +226,7 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
                 <TableCell>{vehicle.price}</TableCell>
                 <TableCell>{vehicle.lastUpdated}</TableCell>
                 <TableCell align="right">
-                  <Tooltip title="View Details">
+                  <Tooltip title={t('vehicles.list.actions.viewDetails')}>
                     <IconButton 
                       size="small" 
                       color="primary"
@@ -239,7 +241,7 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
                     </IconButton>
                   </Tooltip>
                   {vehicle.changeRequests && vehicle.changeRequests.length > 0 && (
-                    <Tooltip title="View Change Requests">
+                    <Tooltip title={t('vehicles.list.actions.viewChangeRequests')}>
                       <IconButton
                         size="small"
                         color="warning"
@@ -255,7 +257,7 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
                     </Tooltip>
                   )}
                   {vehicle.reports && vehicle.reports.length > 0 && (
-                    <Tooltip title="View Reports">
+                    <Tooltip title={t('vehicles.list.actions.viewReports')}>
                       <IconButton
                         size="small"
                         color="error"
@@ -314,25 +316,25 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
           <ListItemIcon>
             <CheckCircle color="success" />
           </ListItemIcon>
-          <ListItemText>Approve</ListItemText>
+          <ListItemText>{t('vehicles.list.actions.approve')}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => handleStatusChange(VEHICLE_STATUS.PENDING)}>
           <ListItemIcon>
             <Help color="warning" />
           </ListItemIcon>
-          <ListItemText>Mark as Pending</ListItemText>
+          <ListItemText>{t('vehicles.list.actions.markPending')}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => handleStatusChange(VEHICLE_STATUS.SUSPENDED)}>
           <ListItemIcon>
             <Block color="error" />
           </ListItemIcon>
-          <ListItemText>Suspend</ListItemText>
+          <ListItemText>{t('vehicles.list.actions.suspend')}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => handleStatusChange(VEHICLE_STATUS.REJECTED)}>
           <ListItemIcon>
             <Cancel color="error" />
           </ListItemIcon>
-          <ListItemText>Reject</ListItemText>
+          <ListItemText>{t('vehicles.list.actions.reject')}</ListItemText>
         </MenuItem>
       </Menu>
     </>

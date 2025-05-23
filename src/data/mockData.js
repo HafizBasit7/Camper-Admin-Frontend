@@ -277,6 +277,64 @@ export const mockStats = {
   rejected: 5
 };
 
+export const mockReports = [
+  {
+    id: 1,
+    vehicleName: 'Luxury RV 2023',
+    ownerName: 'John Doe',
+    reportedBy: 'Alice Smith',
+    issue: 'Vehicle condition does not match the description',
+    status: 'PENDING',
+    date: '2024-03-15',
+    description: 'The vehicle shown in the photos appears to be in much better condition than what was delivered. There are several scratches and dents that were not visible in the listing.',
+    notes: null
+  },
+  {
+    id: 2,
+    vehicleName: 'Family Camper',
+    ownerName: 'Jane Smith',
+    reportedBy: 'Bob Johnson',
+    issue: 'Owner was unprofessional during pickup',
+    status: 'RESOLVED',
+    date: '2024-03-14',
+    description: 'The owner was late for the pickup and was rude when we arrived. They also tried to charge additional fees that were not mentioned in the listing.',
+    notes: 'Issue resolved after mediation. Owner has been warned about professional conduct.'
+  },
+  {
+    id: 3,
+    vehicleName: 'Adventure Van',
+    ownerName: 'Mike Wilson',
+    reportedBy: 'Sarah Brown',
+    issue: 'Vehicle not available on scheduled date',
+    status: 'DISMISSED',
+    date: '2024-03-13',
+    description: 'The vehicle was not available on the scheduled pickup date. Owner did not provide any advance notice.',
+    notes: 'Report dismissed as owner provided evidence of prior cancellation by user.'
+  },
+  {
+    id: 4,
+    vehicleName: 'Compact RV',
+    ownerName: 'Lisa Anderson',
+    reportedBy: 'Tom Davis',
+    issue: 'Safety concerns',
+    status: 'PENDING',
+    date: '2024-03-12',
+    description: 'The vehicle has several safety issues including non-functioning brakes and a leaking fuel tank.',
+    notes: null
+  },
+  {
+    id: 5,
+    vehicleName: 'Deluxe Motorhome',
+    ownerName: 'David Clark',
+    reportedBy: 'Emma White',
+    issue: 'False advertising',
+    status: 'PROCESSING',
+    date: '2024-03-11',
+    description: 'The amenities listed in the description were not available in the vehicle. Several key features were missing or not working.',
+    notes: 'Currently under investigation by the support team.'
+  }
+];
+
 export const getVehicleStats = (vehicles) => {
   return {
     total: vehicles.length,

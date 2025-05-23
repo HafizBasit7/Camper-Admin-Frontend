@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Table, 
   TableBody, 
@@ -20,6 +21,7 @@ import { getStatusColor } from '../data/orderTypes';
 import OrderDetailsDialog from './OrderDetailsDialog';
 
 const OrdersTable = ({ orders }) => {
+  const { t } = useTranslation();
   const [detailsDialog, setDetailsDialog] = useState({ open: false, order: null });
 
   // Handle opening details dialog
@@ -47,13 +49,13 @@ const OrdersTable = ({ orders }) => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow sx={{ backgroundColor: 'primary.verylight' }}>
-              <TableCell sx={{ fontWeight: 600 }}>Order ID</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Customer</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Car Details</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Created</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Updated</TableCell>
-              <TableCell sx={{ fontWeight: 600 }} align="right">View</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('orders.table.orderId')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('orders.table.customer')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('orders.table.carDetails')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('orders.table.status')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('orders.table.created')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>{t('orders.table.updated')}</TableCell>
+              <TableCell sx={{ fontWeight: 600 }} align="right">{t('orders.table.view')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -97,7 +99,7 @@ const OrdersTable = ({ orders }) => {
               <TableRow>
                 <TableCell colSpan={7} align="center" sx={{ py: 3 }}>
                   <Typography variant="body1" color="text.secondary">
-                    No orders found
+                    {t('orders.table.noOrders')}
                   </Typography>
                 </TableCell>
               </TableRow>

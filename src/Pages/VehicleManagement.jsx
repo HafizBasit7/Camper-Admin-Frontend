@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Container,
@@ -21,6 +22,7 @@ import { mockVehicles } from '../data/mockData';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const VehicleManagement = () => {
+  const { t } = useTranslation();
   const [currentTab, setCurrentTab] = useState(VEHICLE_TABS.ALL);
   const [filters, setFilters] = useState({
     search: '',
@@ -66,7 +68,7 @@ const VehicleManagement = () => {
                 onClick={handleBackToOwners}
                 sx={{ mb: 2 }}
               >
-                Back to Owners
+                {t('vehicles.backToOwners')}
               </Button>
               <Typography 
                 variant="h4" 
@@ -77,7 +79,7 @@ const VehicleManagement = () => {
                   mb: 1
                 }}
               >
-                Vehicles for {decodeURIComponent(ownerName)}
+                {t('vehicles.vehiclesForOwner', { ownerName: decodeURIComponent(ownerName) })}
               </Typography>
               <Typography 
                 variant="body1" 
@@ -86,7 +88,7 @@ const VehicleManagement = () => {
                   opacity: 0.8
                 }}
               >
-                Manage and monitor vehicles for this owner
+                {t('vehicles.manageVehicles')}
               </Typography>
             </Box>
 
@@ -128,12 +130,12 @@ const VehicleManagement = () => {
                   }
                 }}
               >
-                <Tab label="All Vehicles" value={VEHICLE_TABS.ALL} />
-                <Tab label="Approved" value={VEHICLE_TABS.APPROVED} />
-                <Tab label="Pending Approval" value={VEHICLE_TABS.PENDING} />
-                <Tab label="Drafts" value={VEHICLE_TABS.DRAFTS} />
-                <Tab label="Change Requests" value={VEHICLE_TABS.CHANGE_REQUESTS} />
-                <Tab label="Reported Issues" value={VEHICLE_TABS.REPORTED} />
+                <Tab label={t('vehicles.tabs.all')} value={VEHICLE_TABS.ALL} />
+                <Tab label={t('vehicles.tabs.approved')} value={VEHICLE_TABS.APPROVED} />
+                <Tab label={t('vehicles.tabs.pending')} value={VEHICLE_TABS.PENDING} />
+                <Tab label={t('vehicles.tabs.drafts')} value={VEHICLE_TABS.DRAFTS} />
+                <Tab label={t('vehicles.tabs.changeRequests')} value={VEHICLE_TABS.CHANGE_REQUESTS} />
+                <Tab label={t('vehicles.tabs.reported')} value={VEHICLE_TABS.REPORTED} />
               </Tabs>
             </Paper>
 

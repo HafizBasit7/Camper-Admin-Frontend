@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   TextField,
@@ -10,6 +11,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { WITHDRAWAL_STATUS } from '../../data/withdrawalTypes';
 
 const WithdrawalFilters = ({ filters, onFilterChange }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const handleSearchChange = (event) => {
@@ -31,8 +33,8 @@ const WithdrawalFilters = ({ filters, onFilterChange }) => {
           <TextField
             fullWidth
             size="small"
-            label="Search"
-            placeholder="Search by owner or vehicle..."
+            label={t('withdrawals.filters.search.label')}
+            placeholder={t('withdrawals.filters.search.placeholder')}
             value={filters.search}
             onChange={handleSearchChange}
             sx={{
@@ -54,7 +56,7 @@ const WithdrawalFilters = ({ filters, onFilterChange }) => {
             fullWidth
             size="small"
             select
-            label="Status"
+            label={t('withdrawals.filters.status.label')}
             value={filters.status || ''}
             onChange={handleStatusChange}
             sx={{
@@ -70,17 +72,17 @@ const WithdrawalFilters = ({ filters, onFilterChange }) => {
               }
             }}
           >
-            <MenuItem value="">All Statuses</MenuItem>
+            <MenuItem value="">{t('withdrawals.filters.status.all')}</MenuItem>
             {Object.values(WITHDRAWAL_STATUS).map((status) => (
               <MenuItem key={status} value={status}>
-                {status.charAt(0) + status.slice(1).toLowerCase()}
+                {t(`withdrawals.status.${status.toLowerCase()}`)}
               </MenuItem>
             ))}
           </TextField>
         </Grid>
         <Grid item xs={12} md={4}>
           <DatePicker
-            label="Date Range"
+            label={t('withdrawals.filters.dateRange')}
             value={filters.dateRange}
             onChange={handleDateRangeChange}
             slotProps={{

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AppBar, Toolbar, Typography, Box, Avatar, Menu, MenuItem, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +8,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 const Header = () => {
   const theme = useTheme()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleMenuOpen = (event) => {
@@ -36,12 +38,12 @@ const Header = () => {
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         {/* Title */}
         <Typography variant="h6" fontWeight="bold">
-          Camper Dooley Admin
+          {t('header.title')}
         </Typography>
 
         {/* Right Section */}
         <Box display="flex" alignItems="center" gap={2}>
-          <Typography variant="body1">Admin</Typography>
+          <Typography variant="body1">{t('header.admin')}</Typography>
           <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
             <Avatar alt="Admin Avatar" src="/assets/avatar.png" />
           </IconButton>
@@ -68,7 +70,7 @@ const Header = () => {
           >
             <MenuItem onClick={handleLogout} sx={{ color: theme.palette.error.main }}>
               <LogoutIcon sx={{ mr: 1 }} />
-              Logout
+              {t('header.logout')}
             </MenuItem>
           </Menu>
         </Box>

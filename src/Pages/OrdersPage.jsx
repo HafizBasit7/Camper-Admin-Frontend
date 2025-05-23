@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Container, Typography, Tabs, Tab } from '@mui/material';
 import { fetchOrders, filterOrdersByStatus } from '../data/mockData';
 import { ORDER_TABS } from '../data/orderTypes';
@@ -6,6 +7,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import OrdersTable from '../Components/ordertable';
 
 const OrdersPage = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('all');
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -47,10 +49,10 @@ const OrdersPage = () => {
     <Container maxWidth="xl">
       <Box sx={{ mt: 3, mb: 4 }}>
         <Typography variant="h4" component="h1" fontWeight="600" gutterBottom>
-          Order Management
+          {t('orders.title')}
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-          View and manage all orders from a single dashboard
+          {t('orders.subtitle')}
         </Typography>
         
         {/* Tabs */}
@@ -80,7 +82,7 @@ const OrdersPage = () => {
             {ORDER_TABS.map((tab) => (
               <Tab 
                 key={tab.value} 
-                label={tab.label} 
+                label={t(`orders.tabs.${tab.value}`)} 
                 value={tab.value} 
               />
             ))}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Container,
@@ -80,6 +81,7 @@ const mockPendingItems = {
 
 const PendingItemsPage = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const { type } = useParams();
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState('ALL');
@@ -157,7 +159,7 @@ const PendingItemsPage = () => {
             onClick={() => navigate(-1)}
             sx={{ mb: 2 }}
           >
-            Back
+            {t('pendingItems.back')}
           </Button>
           <Typography 
             variant="h4" 
@@ -168,7 +170,7 @@ const PendingItemsPage = () => {
               mb: 1
             }}
           >
-            Pending {type.charAt(0).toUpperCase() + type.slice(1)}
+            {t('pendingItems.title', { type: type.charAt(0).toUpperCase() + type.slice(1) })}
           </Typography>
           <Typography 
             variant="body1" 
@@ -177,7 +179,7 @@ const PendingItemsPage = () => {
               opacity: 0.8
             }}
           >
-            Review and manage pending {type}
+            {t('pendingItems.subtitle', { type })}
           </Typography>
         </Box>
 
@@ -211,16 +213,16 @@ const PendingItemsPage = () => {
               }
             }}
           >
-            <Tab label="All" value="ALL" />
-            <Tab label="Pending" value="PENDING" />
-            <Tab label="Under Review" value="REVIEW" />
+            <Tab label={t('pendingItems.tabs.all')} value="ALL" />
+            <Tab label={t('pendingItems.tabs.pending')} value="PENDING" />
+            <Tab label={t('pendingItems.tabs.underReview')} value="REVIEW" />
           </Tabs>
         </Paper>
 
         <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
           <TextField
             fullWidth
-            label="Search"
+            label={t('pendingItems.search')}
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -228,13 +230,13 @@ const PendingItemsPage = () => {
           />
           <TextField
             select
-            label="Type"
+            label={t('pendingItems.type')}
             variant="outlined"
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
             sx={{ flex: 1 }}
           >
-            <MenuItem value="ALL">All Types</MenuItem>
+            <MenuItem value="ALL">{t('pendingItems.allTypes')}</MenuItem>
             {getTypeOptions().map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
@@ -256,16 +258,16 @@ const PendingItemsPage = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
+                <TableCell>{t('pendingItems.table.name')}</TableCell>
                 {type === 'users' ? (
-                  <TableCell>Email</TableCell>
+                  <TableCell>{t('pendingItems.table.email')}</TableCell>
                 ) : (
-                  <TableCell>Owner</TableCell>
+                  <TableCell>{t('pendingItems.table.owner')}</TableCell>
                 )}
-                <TableCell>Type</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell align="right">Actions</TableCell>
+                <TableCell>{t('pendingItems.table.type')}</TableCell>
+                <TableCell>{t('pendingItems.table.status')}</TableCell>
+                <TableCell>{t('pendingItems.table.date')}</TableCell>
+                <TableCell align="right">{t('pendingItems.table.actions')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -360,7 +362,7 @@ const PendingItemsPage = () => {
           <DialogContent>
             <Box sx={{ mb: 3 }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                Details
+                {t('pendingItems.dialog.details')}
               </Typography>
               <Typography variant="body1">
                 {selectedItem?.details}
@@ -369,7 +371,7 @@ const PendingItemsPage = () => {
 
             <Box sx={{ mb: 3 }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                Status
+                {t('pendingItems.dialog.status')}
               </Typography>
               <Chip
                 label={selectedItem?.status}
@@ -383,7 +385,7 @@ const PendingItemsPage = () => {
 
             <Box sx={{ mb: 3 }}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                Date Submitted
+                {t('pendingItems.dialog.dateSubmitted')}
               </Typography>
               <Typography variant="body1">
                 {selectedItem?.date}
@@ -405,7 +407,7 @@ const PendingItemsPage = () => {
                 }
               }}
             >
-              Cancel
+              {t('pendingItems.dialog.cancel')}
             </Button>
             <Button
               variant="contained"
@@ -420,7 +422,7 @@ const PendingItemsPage = () => {
                 borderRadius: 2
               }}
             >
-              Reject
+              {t('pendingItems.dialog.reject')}
             </Button>
             <Button
               variant="contained"
@@ -435,7 +437,7 @@ const PendingItemsPage = () => {
                 borderRadius: 2
               }}
             >
-              Approve
+              {t('pendingItems.dialog.approve')}
             </Button>
           </DialogActions>
         </Dialog>

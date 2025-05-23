@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Container,
@@ -14,6 +15,7 @@ import WithdrawalFilters from '../Components/WithdrawalComponent/WithdrawalFilte
 import WithdrawalStats from '../Components/WithdrawalComponent/WithdrawalStats';
 
 const WithdrawalManagement = () => {
+  const { t } = useTranslation();
   const [currentTab, setCurrentTab] = useState(WITHDRAWAL_TABS.ALL);
   const [filters, setFilters] = useState({
     search: '',
@@ -49,7 +51,7 @@ const WithdrawalManagement = () => {
               mb: 1
             }}
           >
-            Withdrawal Management
+            {t('withdrawals.title')}
           </Typography>
           <Typography 
             variant="body1" 
@@ -58,7 +60,7 @@ const WithdrawalManagement = () => {
               opacity: 0.8
             }}
           >
-            Manage and process withdrawal requests from vehicle owners
+            {t('withdrawals.subtitle')}
           </Typography>
         </Box>
 
@@ -100,10 +102,10 @@ const WithdrawalManagement = () => {
               }
             }}
           >
-            <Tab label="All Requests" value={WITHDRAWAL_TABS.ALL} />
-            <Tab label="New Requests" value={WITHDRAWAL_TABS.NEW} />
-            <Tab label="Sent" value={WITHDRAWAL_TABS.SENT} />
-            <Tab label="Received" value={WITHDRAWAL_TABS.RECEIVED} />
+            <Tab label={t('withdrawals.tabs.all')} value={WITHDRAWAL_TABS.ALL} />
+            <Tab label={t('withdrawals.tabs.new')} value={WITHDRAWAL_TABS.NEW} />
+            <Tab label={t('withdrawals.tabs.sent')} value={WITHDRAWAL_TABS.SENT} />
+            <Tab label={t('withdrawals.tabs.received')} value={WITHDRAWAL_TABS.RECEIVED} />
           </Tabs>
         </Paper>
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Grid, Typography, Container, Stack } from '@mui/material';
 
 
@@ -20,7 +21,7 @@ import OrdersChart from '../Components/DashBoardComponents/OrderChart';
 import RevenueChart from '../Components/DashBoardComponents/RevenueChart';
 
 const Dashboard = () => {
-
+  const { t } = useTranslation();
 
   const dashboardData = {
     totalUsers: 1254,
@@ -39,61 +40,61 @@ const Dashboard = () => {
 
   const statCards = [
     { 
-      title: 'Total Users', 
+      title: t('dashboard.stats.totalUsers'), 
       value: dashboardData.totalUsers, 
       icon: <PeopleOutlineIcon />, 
       color: 'primary.main' 
     },
     { 
-      title: 'Total Vehicles', 
+      title: t('dashboard.stats.totalVehicles'), 
       value: dashboardData.totalVehicles, 
       icon: <DirectionsCarOutlinedIcon />, 
       color: 'primary.blue' 
     },
     { 
-      title: 'Total Orders', 
+      title: t('dashboard.stats.totalOrders'), 
       value: dashboardData.totalOrders, 
       icon: <ShoppingCartOutlinedIcon />, 
       color: 'primary.orange' 
     },
     { 
-      title: 'Ongoing Orders', 
+      title: t('dashboard.stats.ongoingOrders'), 
       value: dashboardData.ongoingOrders, 
       icon: <LocalShippingOutlinedIcon />, 
       color: 'primary.orange2' 
     },
     { 
-      title: 'Completed Orders', 
+      title: t('dashboard.stats.completedOrders'), 
       value: dashboardData.completedOrders, 
       icon: <TaskAltOutlinedIcon />, 
       color: 'success.main' 
     },
     { 
-      title: 'Cancelled Orders', 
+      title: t('dashboard.stats.cancelledOrders'), 
       value: dashboardData.cancelledOrders, 
       icon: <CancelOutlinedIcon />, 
       color: 'error.main' 
     },
     { 
-      title: 'Earned Commissions', 
+      title: t('dashboard.stats.earnedCommissions'), 
       value: `$${dashboardData.earnedCommissions}`, 
       icon: <AttachMoneyOutlinedIcon />, 
       color: 'success.dark' 
     },
     { 
-      title: 'Dismissed Cases', 
+      title: t('dashboard.stats.dismissedCases'), 
       value: dashboardData.dismissedCases, 
       icon: <GavelOutlinedIcon />, 
       color: 'secondary.dark' 
     },
     { 
-      title: 'New Requests', 
+      title: t('dashboard.stats.newRequests'), 
       value: dashboardData.newRequests, 
       icon: <NotificationsActiveOutlinedIcon />, 
       color: 'info.main' 
     },
     { 
-      title: 'Pending Orders', 
+      title: t('dashboard.stats.pendingOrders'), 
       value: dashboardData.pendingOrders, 
       icon: <PendingActionsOutlinedIcon />, 
       color: 'warning.main' 
@@ -103,7 +104,7 @@ const Dashboard = () => {
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 3, fontWeight: 600 }}>
-        Dashboard
+        {t('dashboard.title')}
       </Typography>
 
       
@@ -130,13 +131,13 @@ const Dashboard = () => {
 
       <Box sx={{ mt: 3 }}>
   <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-    Pending Approvals
+    {t('dashboard.pendingApprovals')}
   </Typography>
   <Grid container spacing={3}>
     <Grid item xs={12} md={6} display="flex" justifyContent="center">
       <Box width="100%" maxWidth={500}>
         <PendingSection 
-          title="Pending Users" 
+          title={t('dashboard.pendingUsers')} 
           count={dashboardData.pendingUsers} 
           type="users" 
         />
@@ -145,7 +146,7 @@ const Dashboard = () => {
     <Grid item xs={12} md={6} display="flex" justifyContent="center">
       <Box width="100%" maxWidth={500}>
         <PendingSection 
-          title="Pending Vehicles" 
+          title={t('dashboard.pendingVehicles')} 
           count={dashboardData.pendingVehicles} 
           type="vehicles" 
         />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Paper,
@@ -96,6 +97,7 @@ const mockUsers = [
 ];
 
 const UserManagement = () => {
+  const { t } = useTranslation();
   const [tabValue, setTabValue] = useState(0);
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -200,13 +202,13 @@ const UserManagement = () => {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" sx={{ mb: 3, fontWeight: 600, color: 'text.primary' }}>
-        User Management
+        {t('users.title')}
       </Typography>
       
       <Paper sx={{ mb: 3, p: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <TextField
-            placeholder="Search users by name or email"
+            placeholder={t('users.search.placeholder')}
             variant="outlined"
             size="small"
             value={search}
@@ -223,21 +225,21 @@ const UserManagement = () => {
           
           <Box sx={{ display: 'flex', gap: 2 }}>
             <FormControl size="small" sx={{ width: 150 }}>
-              <InputLabel>Sort By</InputLabel>
+              <InputLabel>{t('users.sort.label')}</InputLabel>
               <Select
                 value={sortBy}
-                label="Sort By"
+                label={t('users.sort.label')}
                 onChange={handleSortChange}
               >
-                <MenuItem value="name">Name</MenuItem>
-                <MenuItem value="email">Email</MenuItem>
-                <MenuItem value="joinDate">Join Date</MenuItem>
-                <MenuItem value="vehiclesUploaded">Vehicles Uploaded</MenuItem>
-                <MenuItem value="vehiclesBooked">Vehicles Booked</MenuItem>
+                <MenuItem value="name">{t('users.sort.name')}</MenuItem>
+                <MenuItem value="email">{t('users.sort.email')}</MenuItem>
+                <MenuItem value="joinDate">{t('users.sort.joinDate')}</MenuItem>
+                <MenuItem value="vehiclesUploaded">{t('users.sort.vehiclesUploaded')}</MenuItem>
+                <MenuItem value="vehiclesBooked">{t('users.sort.vehiclesBooked')}</MenuItem>
               </Select>
             </FormControl>
             
-            <Tooltip title={`Sort ${sortOrder === 'asc' ? 'Descending' : 'Ascending'}`}>
+            <Tooltip title={t(sortOrder === 'asc' ? 'users.sort.descending' : 'users.sort.ascending')}>
               <IconButton onClick={handleSortOrderChange}>
                 <Refresh sx={{ transform: sortOrder === 'desc' ? 'scaleY(-1)' : 'none' }} />
               </IconButton>
@@ -261,24 +263,24 @@ const UserManagement = () => {
             }
           }}
         >
-          <Tab label="All Users" />
-          <Tab label="Admins" />
-          <Tab label="Users" />
+          <Tab label={t('users.tabs.all')} />
+          <Tab label={t('users.tabs.admins')} />
+          <Tab label={t('users.tabs.users')} />
         </Tabs>
         
         <TableContainer>
           <Table>
             <TableHead sx={{ backgroundColor: 'primary.verylight' }}>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Verification</TableCell>
-                <TableCell>Join Date</TableCell>
-                <TableCell>Vehicles Uploaded</TableCell>
-                <TableCell>Vehicles Booked</TableCell>
-                <TableCell align="center">Actions</TableCell>
+                <TableCell>{t('users.table.name')}</TableCell>
+                <TableCell>{t('users.table.email')}</TableCell>
+                <TableCell>{t('users.table.role')}</TableCell>
+                <TableCell>{t('users.table.status')}</TableCell>
+                <TableCell>{t('users.table.verification')}</TableCell>
+                <TableCell>{t('users.table.joinDate')}</TableCell>
+                <TableCell>{t('users.table.vehiclesUploaded')}</TableCell>
+                <TableCell>{t('users.table.vehiclesBooked')}</TableCell>
+                <TableCell align="center">{t('users.table.actions')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -289,7 +291,7 @@ const UserManagement = () => {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
                       <Chip 
-                        label={user.role === 'admin' ? 'Admin' : 'User'} 
+                        label={t(`users.roles.${user.role}`)} 
                         size="small"
                         sx={{ 
                           backgroundColor: user.role === 'admin' ? 'primary.blue' : 'primary.orange',
@@ -302,7 +304,7 @@ const UserManagement = () => {
                     </TableCell>
                     <TableCell>
                       <Chip 
-                        label={user.status === 'active' ? 'Active' : 'Suspended'} 
+                        label={t(`users.status.${user.status}`)} 
                         size="small"
                         sx={{ 
                           backgroundColor: user.status === 'active' ? 'success.light' : 'error.light',
@@ -315,7 +317,7 @@ const UserManagement = () => {
                     </TableCell>
                     <TableCell>
                       <Chip 
-                        label={user.verified ? 'Verified' : 'Not Verified'} 
+                        label={t(user.verified ? 'users.verification.verified' : 'users.verification.notVerified')} 
                         size="small"
                         sx={{ 
                           backgroundColor: user.verified ? 'info.light' : 'secondary.light',
@@ -330,7 +332,7 @@ const UserManagement = () => {
                     <TableCell align="center">{user.vehiclesUploaded}</TableCell>
                     <TableCell align="center">{user.vehiclesBooked}</TableCell>
                     <TableCell align="center">
-                      <Tooltip title={user.status === 'active' ? "Suspend User" : "Activate User"}>
+                      <Tooltip title={t(user.status === 'active' ? 'users.actions.suspend' : 'users.actions.activate')}>
                         <IconButton 
                           size="small" 
                           onClick={() => handleOpenSuspendDialog(user)}
@@ -339,7 +341,7 @@ const UserManagement = () => {
                           {user.status === 'active' ? <Block /> : <CheckCircle />}
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="More Actions">
+                      <Tooltip title={t('users.actions.more')}>
                         <IconButton size="small">
                           <MoreVert />
                         </IconButton>
@@ -351,7 +353,7 @@ const UserManagement = () => {
                 <TableRow>
                   <TableCell colSpan={9} align="center">
                     <Typography variant="body1" sx={{ py: 2 }}>
-                      No users found
+                      {t('users.table.noUsers')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -376,21 +378,21 @@ const UserManagement = () => {
       <Dialog open={openSuspendDialog} onClose={handleCloseSuspendDialog}>
         <DialogTitle>
           {selectedUser?.status === 'active' 
-            ? `Suspend ${selectedUser?.name}'s Account` 
-            : `Activate ${selectedUser?.name}'s Account`}
+            ? t('users.dialog.suspendTitle', { name: selectedUser?.name })
+            : t('users.dialog.activateTitle', { name: selectedUser?.name })}
         </DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
             {selectedUser?.status === 'active' 
-              ? "Are you sure you want to suspend this user? The user will not be able to access the platform until reactivated."
-              : "Are you sure you want to activate this user? The user will regain access to the platform."}
+              ? t('users.dialog.suspendMessage')
+              : t('users.dialog.activateMessage')}
           </DialogContentText>
           
           {selectedUser?.status === 'active' && (
             <TextField
               autoFocus
               margin="dense"
-              label="Reason for suspension"
+              label={t('users.dialog.suspensionReason')}
               fullWidth
               variant="outlined"
               multiline
@@ -402,14 +404,16 @@ const UserManagement = () => {
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
           <Button onClick={handleCloseSuspendDialog} variant="outlined" color="secondary">
-            Cancel
+            {t('users.dialog.cancel')}
           </Button>
           <Button 
             onClick={handleSuspendUser} 
             variant="contained" 
             color={selectedUser?.status === 'active' ? "error" : "primary"}
           >
-            {selectedUser?.status === 'active' ? "Suspend User" : "Activate User"}
+            {selectedUser?.status === 'active' 
+              ? t('users.dialog.suspend')
+              : t('users.dialog.activate')}
           </Button>
         </DialogActions>
       </Dialog>

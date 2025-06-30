@@ -12,6 +12,11 @@ import {
   IconButton,
 } from '@mui/material';
 import { Visibility, VisibilityOff, Email, Lock, Login } from '@mui/icons-material';
+import api from '../api/api';          // axios instance
+import { setToken } from '../../utils/index';  // helpers to store token
+
+
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -21,6 +26,8 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError]   = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -29,10 +36,19 @@ const LoginPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    navigate('/dashboard');
+    setLoading(true);
+    setError('');
+    try {
+      const { data } = await api.post('/admin/', formData);
+      setToken(data.token);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -135,6 +151,7 @@ const LoginPage = () => {
               fullWidth
               variant="contained"
               startIcon={<Login />}
+              disabled={loading}
               sx={{
                 mt: 1,
                 mb: 2,
@@ -145,7 +162,7 @@ const LoginPage = () => {
                 py: 1.5,
               }}
             >
-              {t('login.signIn')}
+              {loading ? t('login.loading') : t('login.signIn')}
             </Button>
           </Box>
         </Paper>

@@ -4,6 +4,8 @@ import { AppBar, Toolbar, Typography, Box, Avatar, Menu, MenuItem, IconButton } 
 import { useTheme } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import LogoutIcon from '@mui/icons-material/Logout'
+import { useLogout  } from '../hooks/mutations'; // adjust path if needed
+
 
 const Header = () => {
   const theme = useTheme()
@@ -19,10 +21,14 @@ const Header = () => {
     setAnchorEl(null)
   }
 
-  const handleLogout = () => {
-    handleMenuClose()
-    navigate('/login')
-  }
+ const logout = useLogout();
+
+
+const handleLogout = () => {
+    logout(); // Now it is a proper function
+  };
+
+
 
   return (
     <AppBar
@@ -68,7 +74,7 @@ const Header = () => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            <MenuItem onClick={handleLogout} sx={{ color: theme.palette.error.main }}>
+            <MenuItem onClick={handleLogout}   sx={{ color: theme.palette.error.main }}>
               <LogoutIcon sx={{ mr: 1 }} />
               {t('header.logout')}
             </MenuItem>

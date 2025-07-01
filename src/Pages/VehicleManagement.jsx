@@ -12,7 +12,7 @@ import {
   Breadcrumbs,
   Link
 } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { VEHICLE_TABS } from '../data/vehicleTypes';
 import VehicleList from '../Components/VehileComponent/VehicleList';
 import VehicleFilters from '../Components/VehileComponent/VehicleFilters';
@@ -20,6 +20,7 @@ import VehicleStats from '../Components/VehileComponent/VehicleStats';
 import OwnerList from '../Components/VehileComponent/OwnerList';
 import { mockVehicles } from '../data/mockData';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useOwnerVehicles } from '../hooks/mutations';
 
 const VehicleManagement = () => {
   const { t } = useTranslation();
@@ -30,8 +31,16 @@ const VehicleManagement = () => {
     status: null
   });
   const theme = useTheme();
-  const { ownerName } = useParams();
+  const { ownerId }  = useParams();
+  const location     = useLocation();
   const navigate = useNavigate();
+  const ownerName    = location.state?.ownerName;
+
+ const { data: vehicles = [], isLoading } = useOwnerVehicles(ownerId, {
+  search : filters.search,
+  status : filters.status,
+  // dateRange etc. can be forwarded the same way
+});
 
   const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -46,9 +55,7 @@ const VehicleManagement = () => {
   };
 
   // Filter vehicles by owner if ownerName is present
-  const filteredVehicles = ownerName 
-    ? mockVehicles.filter(vehicle => vehicle.owner === decodeURIComponent(ownerName))
-    : mockVehicles;
+  const filteredVehicles = vehicles;
 
   return (
     <Box

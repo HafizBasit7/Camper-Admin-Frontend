@@ -1,203 +1,158 @@
+// src/Components/DashBoardComponents/RecentActivities.jsx
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  Card, 
-  CardContent, 
-  Typography, 
-  Box, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  ListItemAvatar, 
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
   Avatar,
-  Button,
   Chip,
-  Divider
+  Divider,
+  Button,
+  Skeleton,
 } from '@mui/material';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-const RecentActivities = () => {
+dayjs.extend(relativeTime);
+
+/* icons ------------------------------------------------------------ */
+import PersonOutlineIcon          from '@mui/icons-material/PersonOutline';
+import DirectionsCarOutlinedIcon  from '@mui/icons-material/DirectionsCarOutlined';
+import ShoppingCartOutlinedIcon   from '@mui/icons-material/ShoppingCartOutlined';
+import GavelOutlinedIcon          from '@mui/icons-material/GavelOutlined';
+import CheckCircleOutlineIcon     from '@mui/icons-material/CheckCircleOutline';
+import CancelOutlinedIcon         from '@mui/icons-material/CancelOutlined';
+import ArrowForwardIcon           from '@mui/icons-material/ArrowForward';
+
+/* ------------------------------------------------------------------ */
+/*  Accept activities + loading via props (Dashboard passes them)     */
+/* ------------------------------------------------------------------ */
+const RecentActivities = ({ activities = [], loading = false }) => {
   const { t } = useTranslation();
 
-  // This would come from your API
-  const activities = [
-    {
-      id: 1,
-      type: 'user_approved',
-      user: 'Alex Johnson',
-      time: '10 minutes ago',
-      icon: <PersonOutlineIcon />,
-      iconColor: 'primary.main',
-      status: 'approved'
-    },
-    {
-      id: 2,
-      type: 'vehicle_rejected',
-      user: 'Maria Garcia',
-      vehicleName: '2023 BMW X5',
-      time: '25 minutes ago',
-      icon: <DirectionsCarOutlinedIcon />,
-      iconColor: 'primary.blue',
-      status: 'rejected'
-    },
-    {
-      id: 3,
-      type: 'order_completed',
-      user: 'James Wilson',
-      orderNumber: 'ORD-2025-5689',
-      time: '1 hour ago',
-      icon: <ShoppingCartOutlinedIcon />,
-      iconColor: 'primary.orange',
-      status: 'completed'
-    },
-    {
-      id: 4,
-      type: 'case_dismissed',
-      user: 'Robert Brown',
-      caseNumber: 'CASE-2025-123',
-      time: '2 hours ago',
-      icon: <GavelOutlinedIcon />,
-      iconColor: 'secondary.dark',
-      status: 'dismissed'
-    },
-    {
-      id: 5,
-      type: 'order_cancelled',
-      user: 'Emily Davis',
-      orderNumber: 'ORD-2025-5684',
-      time: '3 hours ago',
-      icon: <ShoppingCartOutlinedIcon />,
-      iconColor: 'primary.orange',
-      status: 'cancelled'
-    },
-  ];
+  /* ---------------------------------------------------------------- */
+  /*  Helpers                                                         */
+  /* ---------------------------------------------------------------- */
+  const iconForType = type => {
+    switch (type) {
+      case 'user_approved':       return <PersonOutlineIcon />;
+      case 'vehicle_rejected':    return <DirectionsCarOutlinedIcon />;
+      case 'order_completed':     return <ShoppingCartOutlinedIcon />;
+      case 'order_cancelled':     return <ShoppingCartOutlinedIcon />;
+      case 'case_dismissed':      return <GavelOutlinedIcon />;
+      default:                    return <PersonOutlineIcon />;
+    }
+  };
 
-  const getActivityContent = (activity) => {
-    switch (activity.type) {
+  const primaryText = a => {
+    switch (a.type) {
       case 'user_approved':
-        return t('dashboard.recentActivities.activities.userApproved', { user: activity.user });
+        return t('dashboard.recentActivities.activities.userApproved', { user: a.user });
       case 'vehicle_rejected':
-        return t('dashboard.recentActivities.activities.vehicleRejected', { 
-          vehicleName: activity.vehicleName, 
-          user: activity.user 
+        return t('dashboard.recentActivities.activities.vehicleRejected', {
+          vehicleName: a.vehicleName,
+          user       : a.user,
         });
       case 'order_completed':
-        return t('dashboard.recentActivities.activities.orderCompleted', { 
-          orderNumber: activity.orderNumber, 
-          user: activity.user 
-        });
-      case 'case_dismissed':
-        return t('dashboard.recentActivities.activities.caseDismissed', { 
-          caseNumber: activity.caseNumber, 
-          user: activity.user 
+        return t('dashboard.recentActivities.activities.orderCompleted', {
+          orderNumber: a.orderNumber,
+          user       : a.user,
         });
       case 'order_cancelled':
-        return t('dashboard.recentActivities.activities.orderCancelled', { 
-          orderNumber: activity.orderNumber, 
-          user: activity.user 
+        return t('dashboard.recentActivities.activities.orderCancelled', {
+          orderNumber: a.orderNumber,
+          user       : a.user,
+        });
+      case 'case_dismissed':
+        return t('dashboard.recentActivities.activities.caseDismissed', {
+          caseNumber: a.caseNumber,
+          user      : a.user,
         });
       default:
-        return 'Unknown activity';
+        return '—';
     }
   };
 
-  const getStatusChip = (status) => {
-    let color, icon, label;
-    
+  const statusChip = status => {
     switch (status) {
       case 'approved':
-        color = 'success';
-        icon = <CheckCircleOutlineIcon fontSize="small" />;
-        label = t('dashboard.recentActivities.status.approved');
-        break;
-      case 'rejected':
-      case 'cancelled':
-        color = 'error';
-        icon = <CancelOutlinedIcon fontSize="small" />;
-        label = status === 'rejected' 
-          ? t('dashboard.recentActivities.status.rejected')
-          : t('dashboard.recentActivities.status.cancelled');
-        break;
+        return <Chip size="small" color="success" icon={<CheckCircleOutlineIcon fontSize="small" />}  label={t('dashboard.recentActivities.status.approved')}  />;
       case 'completed':
-        color = 'success';
-        icon = <CheckCircleOutlineIcon fontSize="small" />;
-        label = t('dashboard.recentActivities.status.completed');
-        break;
+        return <Chip size="small" color="success" icon={<CheckCircleOutlineIcon fontSize="small" />}  label={t('dashboard.recentActivities.status.completed')} />;
+      case 'rejected':
+        return <Chip size="small" color="error"   icon={<CancelOutlinedIcon     fontSize="small" />}  label={t('dashboard.recentActivities.status.rejected')}  />;
+      case 'cancelled':
+        return <Chip size="small" color="error"   icon={<CancelOutlinedIcon     fontSize="small" />}  label={t('dashboard.recentActivities.status.cancelled')} />;
       case 'dismissed':
-        color = 'secondary';
-        icon = <GavelOutlinedIcon fontSize="small" />;
-        label = t('dashboard.recentActivities.status.dismissed');
-        break;
+        return <Chip size="small" color="secondary" icon={<GavelOutlinedIcon fontSize="small" />}    label={t('dashboard.recentActivities.status.dismissed')} />;
       default:
-        color = 'default';
-        label = status;
+        return null;
     }
-    
-    return (
-      <Chip 
-        size="small" 
-        color={color} 
-        icon={icon} 
-        label={label}
-        sx={{ height: 24, minWidth: 100, borderRadius: 2 }}
-      />
-    );
   };
 
+  /* ---------------------------------------------------------------- */
+  /*  Render                                                          */
+  /* ---------------------------------------------------------------- */
   return (
-    <Card 
-      elevation={0} 
-      sx={{ 
-        border: '1px solid',
-        borderColor: 'primary.verylight',
-        borderRadius: 2
-      }}
-    >
+    <Card elevation={0} sx={{ border: 1, borderColor: 'primary.verylight', borderRadius: 2 }}>
       <CardContent>
-        <Typography variant="h6" mb={2}>{t('dashboard.recentActivities.title')}</Typography>
-        
-        <List sx={{ p: 0 }}>
-          {activities.map((activity, index) => (
-            <React.Fragment key={activity.id}>
-              <ListItem 
-                sx={{ 
-                  px: 1, 
-                  py: 1.5,
-                  '&:hover': {
-                    bgcolor: 'primary.verylight',
-                    borderRadius: 1
-                  }
-                }}
-              >
-                <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "#fff", color: activity.iconColor }}>
-                    {activity.icon}
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText 
-                  primary={getActivityContent(activity)}
-                  secondary={activity.time}
-                  primaryTypographyProps={{ fontWeight: 500 }}
-                />
-                {getStatusChip(activity.status)}
-              </ListItem>
-              {index < activities.length - 1 && <Divider />}
-            </React.Fragment>
-          ))}
-        </List>
-        
+        <Typography variant="h6" mb={2}>
+          {t('dashboard.recentActivities.title')}
+        </Typography>
+
+        {/* skeleton while loading ----------------------------------- */}
+        {loading ? (
+          <Box>
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} variant="rectangular" height={56} sx={{ mb: i === 4 ? 0 : 1 }} />
+            ))}
+          </Box>
+        ) : (
+          <List sx={{ p: 0 }}>
+            {activities.length === 0 && (
+              <Typography variant="body2" color="text.secondary" sx={{ ml: 2, mb: 2 }}>
+                {t('dashboard.recentActivities.noActivity')}
+              </Typography>
+            )}
+
+            {activities.map((a, idx) => (
+              <React.Fragment key={`${a.type}-${idx}`}>
+                <ListItem
+                  sx={{
+                    px: 1,
+                    py: 1.5,
+                    '&:hover': { bgcolor: 'primary.verylight', borderRadius: 1 },
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar sx={{ bgcolor: '#fff', color: 'primary.main' }}>
+                      {iconForType(a.type)}
+                    </Avatar>
+                  </ListItemAvatar>
+
+                <ListItemText
+  primary={primaryText(a)}
+  secondary={dayjs(a.time).fromNow()}
+  primaryTypographyProps={{ fontWeight: 500 }}
+/>
+
+                  {statusChip(a.status)}
+                </ListItem>
+
+                {idx < activities.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </List>
+        )}
+
         <Box display="flex" justifyContent="center" mt={2}>
-          <Button 
-            endIcon={<ArrowForwardIcon />} 
-            color="primary"
-            sx={{ textTransform: 'none' }}
-          >
+          <Button endIcon={<ArrowForwardIcon />} sx={{ textTransform: 'none' }}>
             {t('dashboard.recentActivities.viewAll')}
           </Button>
         </Box>

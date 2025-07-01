@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Grid, Typography, Container, Stack } from '@mui/material';
+import { Box, Grid, Typography, Container, Stack, Skeleton  } from '@mui/material';
 
 
 // Icons
@@ -19,23 +19,43 @@ import PendingSection from '../Components/DashBoardComponents/PendingSection';
 import RecentActivities from '../Components/DashBoardComponents/RecentActivities';
 import OrdersChart from '../Components/DashBoardComponents/OrderChart';
 import RevenueChart from '../Components/DashBoardComponents/RevenueChart';
+import { useDashboardStats, useRecentActivities } from '../hooks/mutations';
 
 const Dashboard = () => {
   const { t } = useTranslation();
 
-  const dashboardData = {
-    totalUsers: 1254,
-    totalVehicles: 345,
-    totalOrders: 2890,
-    ongoingOrders: 42,
-    completedOrders: 2450,
-    cancelledOrders: 398,
-    earnedCommissions: 14750,
-    dismissedCases: 28,
-    newRequests: 17,
-    pendingOrders: 56,
-    pendingUsers: 23,
-    pendingVehicles: 31
+  // const dashboardData = {
+  //   totalUsers: 1254,
+  //   totalVehicles: 345,
+  //   totalOrders: 2890,
+  //   ongoingOrders: 42,
+  //   completedOrders: 2450,
+  //   cancelledOrders: 398,
+  //   earnedCommissions: 14750,
+  //   dismissedCases: 28,
+  //   newRequests: 17,
+  //   pendingOrders: 56,
+  //   pendingUsers: 23,
+  //   pendingVehicles: 31
+  // };
+
+
+  const { data: stats = {},   isLoading: statsLoading   } = useDashboardStats();
+  const { data: activities = [], isLoading: actsLoading } = useRecentActivities();
+
+   const dashboardData = {
+    totalUsers       : stats.totalUsers        ?? 0,
+    totalVehicles    : stats.totalVehicles     ?? 0,
+    totalOrders      : stats.totalOrders       ?? 0,
+    ongoingOrders    : stats.ongoingOrders     ?? 0,
+    completedOrders  : stats.completedOrders   ?? 0,
+    cancelledOrders  : stats.cancelledOrders   ?? 0,
+    earnedCommissions: stats.earnedCommissions ?? 0,
+    dismissedCases   : stats.dismissedCases    ?? 0,
+    newRequests      : stats.newRequests       ?? 0,
+    pendingOrders    : stats.pendingOrders     ?? 0,
+    pendingUsers     : stats.pendingUsers      ?? 0,
+    pendingVehicles  : stats.pendingVehicles   ?? 0,
   };
 
   const statCards = [
@@ -109,14 +129,19 @@ const Dashboard = () => {
 
       
       <Grid container spacing={3} mb={3}>
-        {statCards.map((card, index) => (
+         {statCards.map((card, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <StatCard 
-              title={card.title} 
-              value={card.value} 
-              icon={card.icon} 
-              color={card.color} 
-            />
+            
+            {statsLoading ? (
+              <Skeleton variant="rectangular" height={118} sx={{ borderRadius: 2 }} />
+            ) : (
+              <StatCard
+                title={card.title}
+                value={card.value}
+                icon={card.icon}
+                color={card.color}
+              />
+            )}
           </Grid>
         ))}
       </Grid>
@@ -155,8 +180,11 @@ const Dashboard = () => {
   </Grid>
 </Box>
       <Box sx={{ mt: 3 }}>
-        <RecentActivities />
-      </Box>
+        <RecentActivities
+          activities={activities}
+          loading={actsLoading}
+        />
+       </Box>
     </Container>
   );
 };

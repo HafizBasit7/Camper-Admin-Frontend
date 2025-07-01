@@ -1,13 +1,13 @@
 // src/utils.js
 
-export const getToken = () => {
-  return localStorage.getItem("token");
-};
+const TOKEN_KEY = 'token'; // or rename to 'adminToken' for clarity
+
+export const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 export const setToken = (token) => {
-  localStorage.setItem("token", token);
+  localStorage.setItem(TOKEN_KEY, token);
 };
 
 export const clearToken = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem(TOKEN_KEY);
 };

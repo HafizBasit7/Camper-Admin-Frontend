@@ -162,7 +162,7 @@ const VehicleDetailsDialog = ({ open, onClose, vehicle }) => {
                   <DetailItem label="Owner ID" value={vehicle.user} />
                   <DetailItem label="Name" value={vehicle.name} />
                   <DetailItem label="License Plate" value={vehicle.licensePlate} />
-                  <DetailItem label="Camper Type" value={vehicle.camperType} />
+                  <DetailItem label="Camper Type" value={vehicle.camperType?.name || '-'} />
                   <DetailItem label="Booking Type" value={vehicle.bookingType?.join(', ')} />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -175,22 +175,44 @@ const VehicleDetailsDialog = ({ open, onClose, vehicle }) => {
           </Grid>
 
           {/* Location Information */}
-          <Grid item xs={12}>
-            <DetailSection title="Location Details" icon={<LocationOn />}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <DetailItem 
-                    label="Pickup Location" 
-                    value={vehicle.pickupLocation ? `${vehicle.pickupLocation.address}, ${vehicle.pickupLocation.city}, ${vehicle.pickupLocation.country}` : 'Not specified'} 
-                  />
-                  <DetailItem 
-                    label="Allowed Country" 
-                    value={vehicle.allowedCountry ? `${vehicle.allowedCountry.name} (${vehicle.allowedCountry.code})` : 'Not specified'} 
-                  />
-                </Grid>
-              </Grid>
-            </DetailSection>
-          </Grid>
+      <Grid item xs={12}>
+  <DetailSection title="Location Details" icon={<LocationOn />}>
+    <Grid container spacing={2}>
+      {/* Pickup point */}
+      <Grid item xs={12} md={6}>
+        <DetailItem
+          label="Pickup Location"
+          value={
+            vehicle.pickupLocation?.name
+              ? vehicle.pickupLocation.name           // "haripur"
+              : 'Not specified'
+          }
+        />
+
+        {/* Country */}
+        <DetailItem
+          label="Allowed Country"
+          value={
+            vehicle.allowedCountry
+              ? vehicle.allowedCountry                // "Germany"
+              : 'Not specified'
+          }
+        />
+      </Grid>
+
+      {/* (optional) show lat/long if you like */}
+      {vehicle.pickupLocation?.coordinates && (
+        <Grid item xs={12} md={6}>
+          <DetailItem
+            label="Coordinates"
+            value={vehicle.pickupLocation.coordinates.join(', ')}
+          />
+        </Grid>
+      )}
+    </Grid>
+  </DetailSection>
+</Grid>
+
 
           {/* Pricing Information */}
           <Grid item xs={12}>
@@ -300,7 +322,7 @@ const VehicleDetailsDialog = ({ open, onClose, vehicle }) => {
                   {vehicle.images.map((image, index) => (
                     <ImageListItem key={index}>
                       <img
-                        src={image}
+                       src={image.url} 
                         alt={`Vehicle ${index + 1}`}
                         loading="lazy"
                         style={{ borderRadius: 8 }}

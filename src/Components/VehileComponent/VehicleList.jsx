@@ -1,3 +1,4 @@
+// src/Components/VehileComponent/VehicleList.jsx
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,154 +17,149 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  CircularProgress,
 } from '@mui/material';
-import { 
-  Visibility, 
-  Report, 
+import {
+  Visibility,
+  Report,
   Edit,
   MoreVert,
   CheckCircle,
   Cancel,
   Block,
-  Help
+  Help,
 } from '@mui/icons-material';
-import { VEHICLE_STATUS, VEHICLE_TABS, getStatusColor, getStatusLabel } from '../../data/vehicleTypes';
-import { mockVehicles } from '../../data/mockData';
-import VehicleReports from './VehicleReports';
-import VehicleDetailsDialog from './VehicleDetailsDialog';
-import VehicleChangeRequests from './VehicleChangeRequests';
+import {
+  VEHICLE_STATUS,
+  VEHICLE_TABS,
+  getStatusColor,
+  getStatusLabel,
+} from '../../data/vehicleTypes';
 
-const VehicleList = ({ currentTab, filters, selectedOwner }) => {
+import VehicleReports         from './VehicleReports';
+import VehicleDetailsDialog   from './VehicleDetailsDialog';
+import VehicleChangeRequests  from './VehicleChangeRequests';
+import { useUpdateVehicleStatus } from '../../hooks/mutations';
+
+/* -------------------------------------------------------------------------- */
+/*  NOTE: ❶  This component **does not call an API by itself**.               */
+/*              └─ Give it `vehicles` via props (VehicleManagement already    */
+/*                 passes the array it gets from useOwnerVehicles).           */
+/*         ❷  All UI elements from your original file are preserved.          */
+/* -------------------------------------------------------------------------- */
+
+const VehicleList = ({
+  
+  vehicles = [],     // raw array from the hook
+  currentTab,
+  filters,
+}) => {
+  const { mutate: mutateStatus, isLoading: statusChanging } = useUpdateVehicleStatus();
   const { t } = useTranslation();
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [reportsOpen, setReportsOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(false);
-  const [changeRequestsOpen, setChangeRequestsOpen] = useState(false);
-  const [statusMenuAnchor, setStatusMenuAnchor] = useState(null);
-  const [statusMenuVehicle, setStatusMenuVehicle] = useState(null);
 
-  const handleViewReports = (vehicleId) => {
-    setSelectedVehicle({ id: vehicleId });
-    setReportsOpen(true);
+  /* ---------- local UI state ---------- */
+  const [selectedVehicle,     setSelectedVehicle]     = useState(null);
+  const [reportsOpen,         setReportsOpen]         = useState(false);
+  const [detailsOpen,         setDetailsOpen]         = useState(false);
+  const [changeRequestsOpen,  setChangeRequestsOpen]  = useState(false);
+  const [statusMenuAnchor,    setStatusMenuAnchor]    = useState(null);
+  const [statusMenuVehicle,   setStatusMenuVehicle]   = useState(null);
+
+  /* ---------- helpers (open / close) ---------- */
+  const openDetails   = v  => { setSelectedVehicle(v); setDetailsOpen(true);   };
+  const openReports   = id => { setSelectedVehicle({ id }); setReportsOpen(true); };
+  const openRequests  = v  => { setSelectedVehicle(v); setChangeRequestsOpen(true); };
+
+  const closeDetails        = () => { setDetailsOpen(false);        setSelectedVehicle(null); };
+  const closeReports        = () => { setReportsOpen(false);        setSelectedVehicle(null); };
+  const closeChangeRequests = () => { setChangeRequestsOpen(false); setSelectedVehicle(null); };
+
+  const openStatusMenu  = (e, v) => { setStatusMenuAnchor(e.currentTarget); setStatusMenuVehicle(v); };
+  const closeStatusMenu = ()      => { setStatusMenuAnchor(null);            setStatusMenuVehicle(null); };
+
+  const changeStatus = newStatus => {
+    if (!statusMenuVehicle) return;
+    mutateStatus(
+      { vehicleId: statusMenuVehicle.id, status: newStatus.toLowerCase() },
+      { onSuccess: closeStatusMenu },
+    );
+    /* TODO: call backend to update status */
+    console.log(`Change vehicle ${statusMenuVehicle?.id} → ${newStatus}`);
+    closeStatusMenu();
   };
 
-  const handleCloseReports = () => {
-    setReportsOpen(false);
-    setSelectedVehicle(null);
-  };
-
-  const handleViewDetails = (vehicle) => {
-    setSelectedVehicle(vehicle);
-    setDetailsOpen(true);
-  };
-
-  const handleCloseDetails = () => {
-    setDetailsOpen(false);
-    setSelectedVehicle(null);
-  };
-
-  const handleViewChangeRequests = (vehicle) => {
-    setSelectedVehicle(vehicle);
-    setChangeRequestsOpen(true);
-  };
-
-  const handleCloseChangeRequests = () => {
-    setChangeRequestsOpen(false);
-    setSelectedVehicle(null);
-  };
-
-  const handleStatusMenuOpen = (event, vehicle) => {
-    setStatusMenuAnchor(event.currentTarget);
-    setStatusMenuVehicle(vehicle);
-  };
-
-  const handleStatusMenuClose = () => {
-    setStatusMenuAnchor(null);
-    setStatusMenuVehicle(null);
-  };
-
-  const handleStatusChange = (newStatus) => {
-    // Here you would typically make an API call to update the status
-    console.log(`Changing status of vehicle ${statusMenuVehicle.id} to ${newStatus}`);
-    handleStatusMenuClose();
-  };
-
-  const filteredVehicles = mockVehicles.filter(vehicle => {
-    // Filter by owner if selected
-    if (selectedOwner && vehicle.owner !== selectedOwner) {
+  /* ---------- filtering ---------- */
+  const filtered = vehicles.filter(v => {
+    /* search */
+    if (filters.search && !v.name.toLowerCase().includes(filters.search.toLowerCase()))
       return false;
-    }
 
-    // Filter by search term
-    if (filters.search && !vehicle.name.toLowerCase().includes(filters.search.toLowerCase())) {
+    /* status dropdown */
+    if (filters.status && v.status !== filters.status)
       return false;
-    }
 
-    // Filter by status
-    if (filters.status && vehicle.status !== filters.status) {
-      return false;
-    }
-
-    // Filter by date range
+    /* date range (single “from” date) */
     if (filters.dateRange) {
-      const vehicleDate = new Date(vehicle.lastUpdated);
-      const filterDate = new Date(filters.dateRange);
-      if (vehicleDate < filterDate) {
-        return false;
-      }
+      const updated = new Date(v.lastUpdated);
+      const from    = new Date(filters.dateRange);
+      if (updated < from) return false;
     }
 
-    // Filter by tab
+    /* tab bar */
     switch (currentTab) {
-      case VEHICLE_TABS.ALL:
-        return true;
-      case VEHICLE_TABS.APPROVED:
-        return vehicle.status === VEHICLE_STATUS.APPROVED;
-      case VEHICLE_TABS.PENDING:
-        return vehicle.status === VEHICLE_STATUS.PENDING;
-      case VEHICLE_TABS.DRAFTS:
-        return vehicle.status === VEHICLE_STATUS.DRAFT;
-      case VEHICLE_TABS.CHANGE_REQUESTS:
-        return vehicle.changeRequests && vehicle.changeRequests.length > 0;
-      case VEHICLE_TABS.REPORTED:
-        return vehicle.reports && vehicle.reports.length > 0;
-      default:
-        return true;
-    }
+ case VEHICLE_TABS.APPROVED:
+  return (
+    v.status?.toLowerCase() === 'approved' ||
+    v.status?.toLowerCase() === 'active'
+  );
+  case VEHICLE_TABS.PENDING:
+    return v.status?.toLowerCase() === VEHICLE_STATUS.PENDING.toLowerCase();
+  case VEHICLE_TABS.DRAFTS:
+    return v.status?.toLowerCase() === VEHICLE_STATUS.DRAFT.toLowerCase();
+  case VEHICLE_TABS.CHANGE_REQUESTS:
+    return v.changeRequests?.length > 0;
+  case VEHICLE_TABS.REPORTED:
+    return v.reports?.length > 0;
+  case VEHICLE_TABS.ALL:
+  default:
+    return true;
+}
   });
 
-  if (filteredVehicles.length === 0) {
+  /* ---------- loading / empty state ---------- */
+  if (!vehicles.length) {
     return (
-      <Box 
-        sx={{ 
-          textAlign: 'center', 
-          py: 4,
-          color: 'text.secondary',
-          opacity: 0.8
-        }}
-      >
-        <Typography>
-          {t('vehicles.list.noVehicles')}
-        </Typography>
+      <Box sx={{ py: 6, textAlign: 'center' }}>
+        <CircularProgress size={28} />
       </Box>
     );
   }
 
+  if (!filtered.length) {
+    return (
+      <Box sx={{ py: 6, textAlign: 'center', opacity: 0.75 }}>
+        <Typography>{t('vehicles.list.noVehicles')}</Typography>
+      </Box>
+    );
+  }
+
+  /* ---------- table ---------- */
   return (
     <>
-      <TableContainer 
-        component={Paper} 
-        sx={{ 
+      <TableContainer
+        component={Paper}
+        sx={{
           mt: 2,
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: 'rgba(255,255,255,0.9)',
           backdropFilter: 'blur(10px)',
           borderRadius: 2,
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
-          border: '1px solid rgba(255, 255, 255, 0.2)'
+          boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+          border: 1,
+          borderColor: 'rgba(255,255,255,0.2)',
         }}
       >
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.vehicleName')}</TableCell>
@@ -173,101 +169,62 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
               <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.status')}</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.price')}</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>{t('vehicles.list.table.lastUpdated')}</TableCell>
-              <TableCell align="right" sx={{ fontWeight: 600 }}>{t('vehicles.list.table.actions')}</TableCell>
+              <TableCell align="right" sx={{ fontWeight: 600 }}>
+                {t('vehicles.list.table.actions')}
+              </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {filteredVehicles.map((vehicle) => (
-              <TableRow 
-                key={vehicle.id}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.02)',
-                    transition: 'background-color 0.2s ease-in-out'
-                  }
-                }}
-              >
-                <TableCell>{vehicle.name}</TableCell>
-                <TableCell>{vehicle.owner}</TableCell>
-                <TableCell>{vehicle.type}</TableCell>
-                <TableCell>{vehicle.location}</TableCell>
+            {filtered.map(v => (
+              <TableRow key={v.id} hover>
+                <TableCell>{v.name}</TableCell>
+                <TableCell>{v.ownerName}</TableCell>
+                <TableCell>{v.type}</TableCell>
+                <TableCell>{v.location}</TableCell>
+
+                {/* status chip & menu trigger */}
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Chip
-                      label={getStatusLabel(vehicle.status)}
+                      label={getStatusLabel(v.status)}
                       sx={{
-                        backgroundColor: getStatusColor(vehicle.status),
-                        color: '#000',
+                        backgroundColor: getStatusColor(v.status),
+                        minWidth: 110,
                         fontWeight: 500,
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                        minWidth: 120,
-                        borderRadius: 1,
-                        height: 24,
-                        py: 1,
-                        fontSize: '0.7rem',
-                        '& .MuiChip-label': {
-                          p: 1
-                        }
                       }}
                     />
-                    <IconButton
-                      size="small"
-                      onClick={(e) => handleStatusMenuOpen(e, vehicle)}
-                      sx={{
-                        '&:hover': {
-                          backgroundColor: 'rgba(0, 0, 0, 0.04)'
-                        }
-                      }}
-                    >
+                    <IconButton size="small" onClick={e => {            // prevent the click bubbling up to <tr>
+   e.stopPropagation();
+   openStatusMenu(e, v);
+ }}>
                       <MoreVert fontSize="small" />
                     </IconButton>
                   </Box>
                 </TableCell>
-                <TableCell>{vehicle.price}</TableCell>
-                <TableCell>{vehicle.lastUpdated}</TableCell>
+
+                <TableCell>{v.price}</TableCell>
+                <TableCell>{new Date(v.lastUpdated).toLocaleDateString()}</TableCell>
+
+                {/* actions */}
                 <TableCell align="right">
                   <Tooltip title={t('vehicles.list.actions.viewDetails')}>
-                    <IconButton 
-                      size="small" 
-                      color="primary"
-                      onClick={() => handleViewDetails(vehicle)}
-                      sx={{
-                        '&:hover': {
-                          backgroundColor: 'rgba(25, 118, 210, 0.08)'
-                        }
-                      }}
-                    >
+                    <IconButton size="small" color="primary" onClick={() => openDetails(v)}>
                       <Visibility />
                     </IconButton>
                   </Tooltip>
-                  {vehicle.changeRequests && vehicle.changeRequests.length > 0 && (
+
+                  {!!v.changeRequests?.length && (
                     <Tooltip title={t('vehicles.list.actions.viewChangeRequests')}>
-                      <IconButton
-                        size="small"
-                        color="warning"
-                        onClick={() => handleViewChangeRequests(vehicle)}
-                        sx={{
-                          '&:hover': {
-                            backgroundColor: 'rgba(237, 108, 2, 0.08)'
-                          }
-                        }}
-                      >
+                      <IconButton size="small" color="warning" onClick={() => openRequests(v)}>
                         <Edit />
                       </IconButton>
                     </Tooltip>
                   )}
-                  {vehicle.reports && vehicle.reports.length > 0 && (
+
+                  {!!v.reports?.length && (
                     <Tooltip title={t('vehicles.list.actions.viewReports')}>
-                      <IconButton
-                        size="small"
-                        color="error"
-                        onClick={() => handleViewReports(vehicle.id)}
-                        sx={{
-                          '&:hover': {
-                            backgroundColor: 'rgba(211, 47, 47, 0.08)'
-                          }
-                        }}
-                      >
+                      <IconButton size="small" color="error" onClick={() => openReports(v.id)}>
                         <Report />
                       </IconButton>
                     </Tooltip>
@@ -279,61 +236,29 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
         </Table>
       </TableContainer>
 
-      <VehicleDetailsDialog
-        open={detailsOpen}
-        onClose={handleCloseDetails}
-        vehicle={selectedVehicle}
-      />
+      {/* dialogs */}
+      <VehicleDetailsDialog  open={detailsOpen}        onClose={closeDetails}        vehicle={selectedVehicle} />
+      <VehicleReports        open={reportsOpen}        onClose={closeReports}        vehicleId={selectedVehicle?.id}/>
+      <VehicleChangeRequests open={changeRequestsOpen} onClose={closeChangeRequests} vehicle={selectedVehicle} />
 
-      <VehicleReports
-        open={reportsOpen}
-        onClose={handleCloseReports}
-        vehicleId={selectedVehicle?.id}
-      />
-
-      <VehicleChangeRequests
-        open={changeRequestsOpen}
-        onClose={handleCloseChangeRequests}
-        vehicle={selectedVehicle}
-      />
-
-      <Menu
-        anchorEl={statusMenuAnchor}
-        open={Boolean(statusMenuAnchor)}
-        onClose={handleStatusMenuClose}
-        PaperProps={{
-          sx: {
-            minWidth: 200,
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: 2,
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.2)'
-          }
-        }}
-      >
-        <MenuItem onClick={() => handleStatusChange(VEHICLE_STATUS.APPROVED)}>
-          <ListItemIcon>
-            <CheckCircle color="success" />
-          </ListItemIcon>
+      {/* status‑change menu */}
+      <Menu anchorEl={statusMenuAnchor} open={Boolean(statusMenuAnchor)} onClose={closeStatusMenu}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+  transformOrigin={{ vertical: 'top', horizontal: 'left' }}>
+       
+        <MenuItem onClick={() => changeStatus(VEHICLE_STATUS.APPROVED)}>
+          <ListItemIcon><CheckCircle color="success" /></ListItemIcon>
           <ListItemText>{t('vehicles.list.actions.approve')}</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => handleStatusChange(VEHICLE_STATUS.PENDING)}>
-          <ListItemIcon>
-            <Help color="warning" />
-          </ListItemIcon>
+        <MenuItem onClick={() => changeStatus(VEHICLE_STATUS.PENDING)}>
+          <ListItemIcon><Help color="warning" /></ListItemIcon>
           <ListItemText>{t('vehicles.list.actions.markPending')}</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => handleStatusChange(VEHICLE_STATUS.SUSPENDED)}>
-          <ListItemIcon>
-            <Block color="error" />
-          </ListItemIcon>
+        <MenuItem onClick={() => changeStatus(VEHICLE_STATUS.SUSPENDED)}>
+          <ListItemIcon><Block color="error" /></ListItemIcon>
           <ListItemText>{t('vehicles.list.actions.suspend')}</ListItemText>
         </MenuItem>
-        <MenuItem onClick={() => handleStatusChange(VEHICLE_STATUS.REJECTED)}>
-          <ListItemIcon>
-            <Cancel color="error" />
-          </ListItemIcon>
+        <MenuItem onClick={() => changeStatus(VEHICLE_STATUS.REJECTED)}>
+          <ListItemIcon><Cancel color="error" /></ListItemIcon>
           <ListItemText>{t('vehicles.list.actions.reject')}</ListItemText>
         </MenuItem>
       </Menu>
@@ -341,4 +266,4 @@ const VehicleList = ({ currentTab, filters, selectedOwner }) => {
   );
 };
 
-export default VehicleList; 
+export default VehicleList;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Container, Typography, Tabs, Tab } from '@mui/material';
-import { fetchOrders, filterOrdersByStatus } from '../data/mockData';
+import { Box, Container, Typography, Tabs, Tab, CircularProgress, Pagination  } from '@mui/material';
+import { useAllOrders } from '../hooks/mutations';
 import { ORDER_TABS } from '../data/orderTypes';
 import LoadingSpinner from '../components/LoadingSpinner';
 import OrdersTable from '../Components/ordertable';
@@ -9,31 +9,14 @@ import OrdersTable from '../Components/ordertable';
 const OrdersPage = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('all');
-  const [orders, setOrders] = useState([]);
-  const [filteredOrders, setFilteredOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch orders on component mount
-  useEffect(() => {
-    const getOrders = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchOrders();
-        setOrders(data);
-        setFilteredOrders(data);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getOrders();
-  }, []);
+  const [page, setPage] = useState(1);
+  const limit = 10;
+ const { data, isLoading, isError, error, refetch } = useAllOrders(activeTab, { page, limit });
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
+    setPage(1);
     const filtered = filterOrdersByStatus(orders, newValue);
     setFilteredOrders(filtered);
   };
@@ -43,6 +26,10 @@ const OrdersPage = () => {
     setOrders(updatedOrders);
     const filtered = filterOrdersByStatus(updatedOrders, activeTab);
     setFilteredOrders(filtered);
+  };
+
+    const handlePageChange = (_, newPage) => {
+    setPage(newPage);
   };
 
   return (
@@ -89,13 +76,34 @@ const OrdersPage = () => {
           </Tabs>
         </Box>
         
-        {/* Orders Table or Loading Spinner */}
-        {loading ? (
-          <LoadingSpinner />
+       {/* Loading / Error / Data */}
+        {isLoading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : isError ? (
+          <Box sx={{ p: 3 }}>
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error?.response?.data?.message || t('orders.error.loading')}
+            </Alert>
+            <Button variant="contained" onClick={() => refetch()} startIcon={<Refresh />}>
+              {t('orders.retry')}
+            </Button>
+          </Box>
         ) : (
-          <OrdersTable 
-            orders={filteredOrders}
-          />
+          <>
+            <OrdersTable orders={data?.orders || []} />
+            {data?.total > limit && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', pt: 2 }}>
+                <Pagination
+                  count={Math.ceil(data.total / limit)}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </Box>
+            )}
+          </>
         )}
       </Box>
     </Container>

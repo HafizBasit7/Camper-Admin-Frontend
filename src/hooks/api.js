@@ -33,18 +33,12 @@ export const fetchAllUsers = async (params = {}) => {
  * @param {string} payload.status   "active" | "suspended"
  * @param {string} [payload.reason] Suspension reason (optional)
  */
-export const updateUserStatus = async ({ userId, status, reason }) => {
-  try {
-    const res = await api.patch(`/admin/users/${userId}/status`, {
-      status,
-      ...(reason && { reason }),      // include 'reason' only when provided
-    });
-    return res.data;                 // { success: true, message: "Status updated" }
-  } catch (err) {
-    console.error('Error updating user status:', err);
-    throw err;
-  }
+// ✅ This is good
+export const updateUserStatus = async ({ userId, ...updates }) => {
+  const res = await api.patch(`/admin/users/${userId}`, updates);
+  return res.data;
 };
+
 
 
 /** Owner‑level camper / booking stats */
@@ -98,4 +92,38 @@ export const fetchDashboardStats = async () => {
 export const fetchRecentActivities = async () => {
   const { data } = await api.get('/admin/dashboard/recentActivites');
   return data ?? [];              // guaranteed array
+};
+
+// Fetch pending items (users or campers)
+// api.js or hooks/api.js
+/* GET /admin/dashboard/pending/:type  --------------------------- */
+export const fetchPendingItems = async (type) => {
+  const { data } = await api.get(`/admin/dashboard/pending/${type}`);
+  return data ?? [];
+};
+
+
+
+
+
+// api/orders.js or wherever you defined fetchAllOrders
+export const fetchAllOrders = async (status = 'all', params = { page: 1, limit: 10 }) => {
+  const queryParams = {
+    ...(status !== 'all' && { status }),
+    page: params.page,
+    limit: params.limit,
+  };
+
+  const res = await api.get('admin/orders/getOrders', {
+    params: queryParams,
+  });
+
+  return res.data?.data ?? { orders: [], total: 0 }; // assuming API returns { orders: [], total: number }
+};
+
+
+/** GET /api/orders/getOrders/:orderId */
+export const fetchOrderById = async (orderId) => {
+  const res = await api.get(`admin/orders/getOrders/${orderId}`);
+  return res.data?.data ?? null;
 };

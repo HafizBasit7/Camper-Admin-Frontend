@@ -14,42 +14,23 @@ import {
   Divider,
   useTheme,
   Chip,
-  Grid
+  Grid,
+  CircularProgress
 } from '@mui/material';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
+import { usePendingItems } from '../../hooks/mutations'; // Adjust path if needed
 
 const PendingSection = ({ title, count, type }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  // This would come from your API
-  const pendingItems = [
-    { 
-      id: 1, 
-      name: type === 'users' ? 'John Smith' : '2022 Toyota Camry', 
-      date: '18 May 2025',
-      status: 'PENDING',
-      details: type === 'users' ? 'New user registration' : 'New vehicle listing'
-    },
-    { 
-      id: 2, 
-      name: type === 'users' ? 'Maria Garcia' : '2023 Honda Civic', 
-      date: '17 May 2025',
-      status: 'REVIEW',
-      details: type === 'users' ? 'Profile update' : 'Vehicle details update'
-    },
-    { 
-      id: 3, 
-      name: type === 'users' ? 'James Wilson' : '2021 Ford Explorer', 
-      date: '16 May 2025',
-      status: 'PENDING',
-      details: type === 'users' ? 'Document verification' : 'Price update request'
-    },
-  ];
+   const backendType = type === 'vehicles' ? 'campers' : type;
+
+  const { data: pendingItems = [], isLoading } = usePendingItems(backendType);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -90,20 +71,9 @@ const PendingSection = ({ title, count, type }) => {
             justifyContent="space-between" 
             alignItems="center" 
             mb={3}
-            sx={{
-              borderBottom: '1px solid',
-              borderColor: 'divider',
-              pb: 2
-            }}
+            sx={{ borderBottom: '1px solid', borderColor: 'divider', pb: 2 }}
           >
-            <Typography 
-              variant="h6" 
-              fontWeight="bold"
-              sx={{
-                color: theme.palette.text.primary,
-                textShadow: '0 1px 2px rgba(0,0,0,0.1)'
-              }}
-            >
+            <Typography variant="h6" fontWeight="bold" sx={{ color: theme.palette.text.primary, textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
               {title}
             </Typography>
             <Chip
@@ -114,109 +84,114 @@ const PendingSection = ({ title, count, type }) => {
                 fontWeight: 600,
                 borderRadius: 2,
                 px: 1,
-                '& .MuiChip-label': {
-                  px: 2
-                }
+                '& .MuiChip-label': { px: 2 }
               }}
             />
           </Box>
-          
-          <List sx={{ p: 0 }}>
-            {pendingItems.map((item, index) => (
-              <React.Fragment key={item.id}>
-                <ListItem 
-                  sx={{ 
-                    px: 2, 
-                    py: 2,
-                    borderRadius: 2,
-                    mb: 1,
-                    transition: 'all 0.2s ease',
-                    '&:hover': {
-                      backgroundColor: 'rgba(0, 0, 0, 0.02)',
-                      transform: 'translateX(4px)'
-                    }
-                  }}
-                >
-                  <ListItemAvatar>
-                    <Avatar 
-                      sx={{ 
-                        bgcolor: type === 'users' ? theme.palette.primary.main : theme.palette.info.main,
-                        color: 'white',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                        width: 40,
-                        height: 40
-                      }}
-                    >
-                      {type === 'users' ? <PersonOutlineIcon /> : <DirectionsCarOutlinedIcon />}
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText 
-                    primary={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Typography variant="subtitle1" fontWeight={600}>
-                          {item.name}
-                        </Typography>
-                        <Chip
-                          label={t(`dashboard.pendingSection.status.${item.status.toLowerCase()}`)}
-                          size="small"
-                          sx={{
-                            backgroundColor: getStatusColor(item.status),
-                            color: 'white',
-                            height: 20,
-                            borderRadius: 2,
-                            '& .MuiChip-label': {
-                              px: 1,
-                              fontSize: '0.7rem'
-                            }
-                          }}
-                        />
-                      </Box>
-                    }
-                    secondary={
-                      <Box sx={{ mt: 0.5 }}>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.details}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {t('dashboard.pendingSection.submitted', { date: item.date })}
-                        </Typography>
-                      </Box>
-                    }
-                  />
-                  <Button 
-                    size="small" 
-                    variant="contained"
-                    color={type === 'users' ? 'primary' : 'info'}
+
+          {isLoading ? (
+            <Box display="flex" justifyContent="center" alignItems="center" height={200}>
+              <CircularProgress size={24} />
+            </Box>
+          ) : (
+            <List sx={{ p: 0 }}>
+              {pendingItems.slice(0, 3).map((item, index) => (
+                <React.Fragment key={item.id}>
+                  <ListItem 
                     sx={{ 
-                      minWidth: 100,
+                      px: 2, 
+                      py: 2,
                       borderRadius: 2,
-                      textTransform: 'none',
-                      fontWeight: 500,
-                      ml: 2,
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                      mb: 1,
+                      transition: 'all 0.2s ease',
                       '&:hover': {
-                        transform: 'translateY(-1px)',
-                        boxShadow: '0 4px 8px rgba(0,0,0,0.15)'
+                        backgroundColor: 'rgba(0, 0, 0, 0.02)',
+                        transform: 'translateX(4px)'
                       }
                     }}
                   >
-                    {t('dashboard.pendingSection.review')}
-                  </Button>
-                </ListItem>
-                {index < pendingItems.length - 1 && (
-                  <Divider 
-                    variant="inset" 
-                    component="li" 
-                    sx={{ 
-                      my: 1,
-                      borderColor: 'rgba(0, 0, 0, 0.06)'
-                    }} 
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          </List>
-          
+                    <ListItemAvatar>
+                      <Avatar 
+                        sx={{ 
+                          bgcolor: type === 'users' ? theme.palette.primary.main : theme.palette.info.main,
+                          color: 'white',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                          width: 40,
+                          height: 40
+                        }}
+                      >
+                        {type === 'users' ? <PersonOutlineIcon /> : <DirectionsCarOutlinedIcon />}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText 
+                      primary={
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Typography variant="subtitle1" fontWeight={600}>
+                            {item.name}
+                          </Typography>
+                          <Chip
+                            label={t(`dashboard.pendingSection.status.${item.status.toLowerCase()}`)}
+                            size="small"
+                            sx={{
+                              backgroundColor: getStatusColor(item.status),
+                              color: 'white',
+                              height: 20,
+                              borderRadius: 2,
+                              '& .MuiChip-label': {
+                                px: 1,
+                                fontSize: '0.7rem'
+                              }
+                            }}
+                          />
+                        </Box>
+                      }
+                      secondary={
+                        <Box sx={{ mt: 0.5 }}>
+                          <Typography variant="body2" color="text.secondary">
+                            {item.details}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {t('dashboard.pendingSection.submitted', { date: item.date })}
+                          </Typography>
+                        </Box>
+                      }
+                    />
+                    <Button 
+                      size="small" 
+                      variant="contained"
+                      color={type === 'users' ? 'primary' : 'info'}
+                      sx={{ 
+                        minWidth: 100,
+                        borderRadius: 2,
+                        textTransform: 'none',
+                        fontWeight: 500,
+                        ml: 2,
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                        '&:hover': {
+                          transform: 'translateY(-1px)',
+                          boxShadow: '0 4px 8px rgba(0,0,0,0.15)'
+                        }
+                      }}
+                      onClick={handleViewAll}
+                    >
+                      {t('dashboard.pendingSection.review')}
+                    </Button>
+                  </ListItem>
+                  {index < pendingItems.length - 1 && (
+                    <Divider 
+                      variant="inset" 
+                      component="li" 
+                      sx={{ 
+                        my: 1,
+                        borderColor: 'rgba(0, 0, 0, 0.06)'
+                      }} 
+                    />
+                  )}
+                </React.Fragment>
+              ))}
+            </List>
+          )}
+
           <Box 
             display="flex" 
             justifyContent="center" 

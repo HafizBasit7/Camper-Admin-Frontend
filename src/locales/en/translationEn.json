@@ -240,10 +240,15 @@
       "descending": "Sort Descending"
     },
     "actions": {
-      "suspend": "Suspend User",
-      "activate": "Activate User",
-      "more": "More Actions"
-    },
+  "suspend": "Suspend User",
+  "activate": "Activate User",
+  "setUser": "Set as User",
+  "setAdmin": "Set as Admin",
+  "verify": "Verify Email",
+  "unverify": "Unverify Email",
+  "more": "More Actions"
+}
+,
     "dialog": {
       "suspendTitle": "Suspend {{name}}'s Account",
       "activateTitle": "Activate {{name}}'s Account",
